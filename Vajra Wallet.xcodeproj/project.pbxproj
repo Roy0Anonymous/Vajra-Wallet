@@ -11,6 +11,19 @@
 		C6D8C5822A215B290057D42E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5812A215B290057D42E /* ContentView.swift */; };
 		C6D8C5842A215B2A0057D42E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D8C5832A215B2A0057D42E /* Assets.xcassets */; };
 		C6D8C5872A215B2A0057D42E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D8C5862A215B2A0057D42E /* Preview Assets.xcassets */; };
+		C6D8C58F2A215CE60057D42E /* LightningDevKit in Frameworks */ = {isa = PBXBuildFile; productRef = C6D8C58E2A215CE60057D42E /* LightningDevKit */; };
+		C6D8C5922A215D0D0057D42E /* BitcoinDevKit in Frameworks */ = {isa = PBXBuildFile; productRef = C6D8C5912A215D0D0057D42E /* BitcoinDevKit */; };
+		C6D8C5942A215D290057D42E /* MyFeeEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5932A215D290057D42E /* MyFeeEstimator.swift */; };
+		C6D8C5962A215D430057D42E /* MyLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5952A215D430057D42E /* MyLogger.swift */; };
+		C6D8C5982A215D540057D42E /* MyBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5972A215D540057D42E /* MyBroadcaster.swift */; };
+		C6D8C59A2A215E6C0057D42E /* MyPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5992A215E6C0057D42E /* MyPersister.swift */; };
+		C6D8C59E2A2192CF0057D42E /* BlockchainData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C59D2A2192CF0057D42E /* BlockchainData.swift */; };
+		C6D8C5A02A2193020057D42E /* DataGetPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C59F2A2193020057D42E /* DataGetPost.swift */; };
+		C6D8C5A22A21933E0057D42E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5A12A21933E0057D42E /* Utils.swift */; };
+		C6D8C5A42A2193570057D42E /* MerkleProof.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5A32A2193570057D42E /* MerkleProof.swift */; };
+		C6D8C5A62A21936C0057D42E /* Tx.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5A52A21936C0057D42E /* Tx.swift */; };
+		C6D8C5AC2A2196CB0057D42E /* FileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5AB2A2196CB0057D42E /* FileHandler.swift */; };
+		C6D8C5AE2A2197D90057D42E /* MyFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5AD2A2197D90057D42E /* MyFilter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +32,17 @@
 		C6D8C5812A215B290057D42E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C6D8C5832A215B2A0057D42E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C6D8C5862A215B2A0057D42E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C6D8C5932A215D290057D42E /* MyFeeEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFeeEstimator.swift; sourceTree = "<group>"; };
+		C6D8C5952A215D430057D42E /* MyLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLogger.swift; sourceTree = "<group>"; };
+		C6D8C5972A215D540057D42E /* MyBroadcaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBroadcaster.swift; sourceTree = "<group>"; };
+		C6D8C5992A215E6C0057D42E /* MyPersister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPersister.swift; sourceTree = "<group>"; };
+		C6D8C59D2A2192CF0057D42E /* BlockchainData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockchainData.swift; sourceTree = "<group>"; };
+		C6D8C59F2A2193020057D42E /* DataGetPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataGetPost.swift; sourceTree = "<group>"; };
+		C6D8C5A12A21933E0057D42E /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		C6D8C5A32A2193570057D42E /* MerkleProof.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerkleProof.swift; sourceTree = "<group>"; };
+		C6D8C5A52A21936C0057D42E /* Tx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tx.swift; sourceTree = "<group>"; };
+		C6D8C5AB2A2196CB0057D42E /* FileHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandler.swift; sourceTree = "<group>"; };
+		C6D8C5AD2A2197D90057D42E /* MyFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFilter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +50,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6D8C5922A215D0D0057D42E /* BitcoinDevKit in Frameworks */,
+				C6D8C58F2A215CE60057D42E /* LightningDevKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,7 +78,10 @@
 			isa = PBXGroup;
 			children = (
 				C6D8C57F2A215B290057D42E /* Vajra_WalletApp.swift */,
-				C6D8C5812A215B290057D42E /* ContentView.swift */,
+				C6D8C5A72A2193DB0057D42E /* Models */,
+				C6D8C5A82A2193E40057D42E /* Helpers */,
+				C6D8C5A92A2193F60057D42E /* LDK */,
+				C6D8C5AA2A2194100057D42E /* Views */,
 				C6D8C5832A215B2A0057D42E /* Assets.xcassets */,
 				C6D8C5852A215B2A0057D42E /* Preview Content */,
 			);
@@ -65,6 +94,46 @@
 				C6D8C5862A215B2A0057D42E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C6D8C5A72A2193DB0057D42E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C6D8C5A32A2193570057D42E /* MerkleProof.swift */,
+				C6D8C5A52A21936C0057D42E /* Tx.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C6D8C5A82A2193E40057D42E /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				C6D8C59D2A2192CF0057D42E /* BlockchainData.swift */,
+				C6D8C59F2A2193020057D42E /* DataGetPost.swift */,
+				C6D8C5A12A21933E0057D42E /* Utils.swift */,
+				C6D8C5AB2A2196CB0057D42E /* FileHandler.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		C6D8C5A92A2193F60057D42E /* LDK */ = {
+			isa = PBXGroup;
+			children = (
+				C6D8C5932A215D290057D42E /* MyFeeEstimator.swift */,
+				C6D8C5952A215D430057D42E /* MyLogger.swift */,
+				C6D8C5972A215D540057D42E /* MyBroadcaster.swift */,
+				C6D8C5992A215E6C0057D42E /* MyPersister.swift */,
+				C6D8C5AD2A2197D90057D42E /* MyFilter.swift */,
+			);
+			path = LDK;
+			sourceTree = "<group>";
+		};
+		C6D8C5AA2A2194100057D42E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C6D8C5812A215B290057D42E /* ContentView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +152,10 @@
 			dependencies = (
 			);
 			name = "Vajra Wallet";
+			packageProductDependencies = (
+				C6D8C58E2A215CE60057D42E /* LightningDevKit */,
+				C6D8C5912A215D0D0057D42E /* BitcoinDevKit */,
+			);
 			productName = "Vajra Wallet";
 			productReference = C6D8C57C2A215B290057D42E /* Vajra Wallet.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +184,10 @@
 				Base,
 			);
 			mainGroup = C6D8C5732A215B290057D42E;
+			packageReferences = (
+				C6D8C58D2A215CE60057D42E /* XCRemoteSwiftPackageReference "ldk-swift" */,
+				C6D8C5902A215D0D0057D42E /* XCRemoteSwiftPackageReference "bdk-swift" */,
+			);
 			productRefGroup = C6D8C57D2A215B290057D42E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -138,7 +215,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6D8C5822A215B290057D42E /* ContentView.swift in Sources */,
+				C6D8C5942A215D290057D42E /* MyFeeEstimator.swift in Sources */,
+				C6D8C5AC2A2196CB0057D42E /* FileHandler.swift in Sources */,
+				C6D8C5AE2A2197D90057D42E /* MyFilter.swift in Sources */,
+				C6D8C5A22A21933E0057D42E /* Utils.swift in Sources */,
+				C6D8C59E2A2192CF0057D42E /* BlockchainData.swift in Sources */,
+				C6D8C5A42A2193570057D42E /* MerkleProof.swift in Sources */,
 				C6D8C5802A215B290057D42E /* Vajra_WalletApp.swift in Sources */,
+				C6D8C5A62A21936C0057D42E /* Tx.swift in Sources */,
+				C6D8C5A02A2193020057D42E /* DataGetPost.swift in Sources */,
+				C6D8C59A2A215E6C0057D42E /* MyPersister.swift in Sources */,
+				C6D8C5962A215D430057D42E /* MyLogger.swift in Sources */,
+				C6D8C5982A215D540057D42E /* MyBroadcaster.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +427,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C6D8C58D2A215CE60057D42E /* XCRemoteSwiftPackageReference "ldk-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lightningdevkit/ldk-swift/";
+			requirement = {
+				kind = exactVersion;
+				version = 0.0.115;
+			};
+		};
+		C6D8C5902A215D0D0057D42E /* XCRemoteSwiftPackageReference "bdk-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bitcoindevkit/bdk-swift";
+			requirement = {
+				kind = exactVersion;
+				version = 0.28.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C6D8C58E2A215CE60057D42E /* LightningDevKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C6D8C58D2A215CE60057D42E /* XCRemoteSwiftPackageReference "ldk-swift" */;
+			productName = LightningDevKit;
+		};
+		C6D8C5912A215D0D0057D42E /* BitcoinDevKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C6D8C5902A215D0D0057D42E /* XCRemoteSwiftPackageReference "bdk-swift" */;
+			productName = BitcoinDevKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C6D8C5742A215B290057D42E /* Project object */;
 }
