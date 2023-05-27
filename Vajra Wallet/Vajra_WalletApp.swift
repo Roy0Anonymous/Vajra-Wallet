@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct Vajra_WalletApp: App {
+    @ObservedObject var ldkManager = LDKManager()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if ldkManager.bdkManager.wallet == nil {
+                CreateWalletView()
+                    .environmentObject(ldkManager)
+            } else {
+                TabBarView()
+                    .environmentObject(ldkManager)
+            }
         }
     }
 }

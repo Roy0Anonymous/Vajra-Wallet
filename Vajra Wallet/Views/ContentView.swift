@@ -8,19 +8,42 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var ldkManager: LDKManager
+    @State private var receiveAddress: String?
+    @State private var hasAppeared = false
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        VStack(spacing: 15) {
+            Text("Wallet")
+                .font(.title)
+                .bold()
+                .padding(.bottom, 50)
+            switch ldkManager.bdkManager.syncState {
+            case .syncing:
+                Text("Syncing")
+            case .synced:
+                HStack(alignment: .firstTextBaseline) {
+                    Text((ldkManager.bdkManager.balance?.total.description)!)
+                    Text("Sats")
+                }
+            case .notsynced:
+                Text("Not synced")
+            case .failed:
+                Text("Sync failed")
+            }
+            Button("Sync") {
+                receiveAddress = ldkManager.bdkManager.getAddress(addressIndex: .new)
+                ldkManager.sync()
+            }
+            Text(receiveAddress ?? "No Address Found")
+            Spacer()
         }
         .padding()
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+        .onAppear {
+            if !hasAppeared {
+                hasAppeared = true
+                receiveAddress = ldkManager.bdkManager.getAddress(addressIndex: .new)
+            }
+            ldkManager.bdkManager.sync()
+        }
     }
 }

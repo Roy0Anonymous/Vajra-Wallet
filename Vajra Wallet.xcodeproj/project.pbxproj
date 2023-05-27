@@ -24,6 +24,18 @@
 		C6D8C5A62A21936C0057D42E /* Tx.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5A52A21936C0057D42E /* Tx.swift */; };
 		C6D8C5AC2A2196CB0057D42E /* FileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5AB2A2196CB0057D42E /* FileHandler.swift */; };
 		C6D8C5AE2A2197D90057D42E /* MyFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5AD2A2197D90057D42E /* MyFilter.swift */; };
+		C6D8C5B02A2252B40057D42E /* MyChannelManagerPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5AF2A2252B40057D42E /* MyChannelManagerPersister.swift */; };
+		C6D8C5B22A2254120057D42E /* LDKManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5B12A2254120057D42E /* LDKManager.swift */; };
+		C6D8C5B42A2254450057D42E /* BDKManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5B32A2254450057D42E /* BDKManager.swift */; };
+		C6D8C5B72A2254DE0057D42E /* KeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5B62A2254DE0057D42E /* KeyData.swift */; };
+		C6D8C5BB2A22569C0057D42E /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5BA2A22569C0057D42E /* TabBarView.swift */; };
+		C6D8C5BD2A2256B40057D42E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5BC2A2256B40057D42E /* SettingsView.swift */; };
+		C6D8C5BF2A2256CE0057D42E /* ListPeersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5BE2A2256CE0057D42E /* ListPeersView.swift */; };
+		C6D8C5C12A2256D60057D42E /* ConnectToPeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5C02A2256D60057D42E /* ConnectToPeerView.swift */; };
+		C6D8C5C32A2256DC0057D42E /* OpenChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5C22A2256DC0057D42E /* OpenChannelView.swift */; };
+		C6D8C5C52A2256E20057D42E /* ListChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5C42A2256E20057D42E /* ListChannelsView.swift */; };
+		C6D8C5C72A2256E90057D42E /* ListUsableChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5C62A2256E90057D42E /* ListUsableChannelsView.swift */; };
+		C6D8C5C92A2257680057D42E /* CreateWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5C82A2257680057D42E /* CreateWalletView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +55,18 @@
 		C6D8C5A52A21936C0057D42E /* Tx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tx.swift; sourceTree = "<group>"; };
 		C6D8C5AB2A2196CB0057D42E /* FileHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandler.swift; sourceTree = "<group>"; };
 		C6D8C5AD2A2197D90057D42E /* MyFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFilter.swift; sourceTree = "<group>"; };
+		C6D8C5AF2A2252B40057D42E /* MyChannelManagerPersister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChannelManagerPersister.swift; sourceTree = "<group>"; };
+		C6D8C5B12A2254120057D42E /* LDKManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKManager.swift; sourceTree = "<group>"; };
+		C6D8C5B32A2254450057D42E /* BDKManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDKManager.swift; sourceTree = "<group>"; };
+		C6D8C5B62A2254DE0057D42E /* KeyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyData.swift; sourceTree = "<group>"; };
+		C6D8C5BA2A22569C0057D42E /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		C6D8C5BC2A2256B40057D42E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C6D8C5BE2A2256CE0057D42E /* ListPeersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPeersView.swift; sourceTree = "<group>"; };
+		C6D8C5C02A2256D60057D42E /* ConnectToPeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectToPeerView.swift; sourceTree = "<group>"; };
+		C6D8C5C22A2256DC0057D42E /* OpenChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenChannelView.swift; sourceTree = "<group>"; };
+		C6D8C5C42A2256E20057D42E /* ListChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListChannelsView.swift; sourceTree = "<group>"; };
+		C6D8C5C62A2256E90057D42E /* ListUsableChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListUsableChannelsView.swift; sourceTree = "<group>"; };
+		C6D8C5C82A2257680057D42E /* CreateWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +104,7 @@
 				C6D8C57F2A215B290057D42E /* Vajra_WalletApp.swift */,
 				C6D8C5A72A2193DB0057D42E /* Models */,
 				C6D8C5A82A2193E40057D42E /* Helpers */,
+				C6D8C5B52A2254500057D42E /* BDK */,
 				C6D8C5A92A2193F60057D42E /* LDK */,
 				C6D8C5AA2A2194100057D42E /* Views */,
 				C6D8C5832A215B2A0057D42E /* Assets.xcassets */,
@@ -112,6 +137,7 @@
 				C6D8C59F2A2193020057D42E /* DataGetPost.swift */,
 				C6D8C5A12A21933E0057D42E /* Utils.swift */,
 				C6D8C5AB2A2196CB0057D42E /* FileHandler.swift */,
+				C6D8C5B62A2254DE0057D42E /* KeyData.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -124,6 +150,8 @@
 				C6D8C5972A215D540057D42E /* MyBroadcaster.swift */,
 				C6D8C5992A215E6C0057D42E /* MyPersister.swift */,
 				C6D8C5AD2A2197D90057D42E /* MyFilter.swift */,
+				C6D8C5AF2A2252B40057D42E /* MyChannelManagerPersister.swift */,
+				C6D8C5B12A2254120057D42E /* LDKManager.swift */,
 			);
 			path = LDK;
 			sourceTree = "<group>";
@@ -131,9 +159,25 @@
 		C6D8C5AA2A2194100057D42E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C6D8C5BA2A22569C0057D42E /* TabBarView.swift */,
+				C6D8C5C82A2257680057D42E /* CreateWalletView.swift */,
 				C6D8C5812A215B290057D42E /* ContentView.swift */,
+				C6D8C5BC2A2256B40057D42E /* SettingsView.swift */,
+				C6D8C5BE2A2256CE0057D42E /* ListPeersView.swift */,
+				C6D8C5C02A2256D60057D42E /* ConnectToPeerView.swift */,
+				C6D8C5C22A2256DC0057D42E /* OpenChannelView.swift */,
+				C6D8C5C42A2256E20057D42E /* ListChannelsView.swift */,
+				C6D8C5C62A2256E90057D42E /* ListUsableChannelsView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		C6D8C5B52A2254500057D42E /* BDK */ = {
+			isa = PBXGroup;
+			children = (
+				C6D8C5B32A2254450057D42E /* BDKManager.swift */,
+			);
+			path = BDK;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,17 +260,29 @@
 			files = (
 				C6D8C5822A215B290057D42E /* ContentView.swift in Sources */,
 				C6D8C5942A215D290057D42E /* MyFeeEstimator.swift in Sources */,
+				C6D8C5C92A2257680057D42E /* CreateWalletView.swift in Sources */,
 				C6D8C5AC2A2196CB0057D42E /* FileHandler.swift in Sources */,
 				C6D8C5AE2A2197D90057D42E /* MyFilter.swift in Sources */,
 				C6D8C5A22A21933E0057D42E /* Utils.swift in Sources */,
 				C6D8C59E2A2192CF0057D42E /* BlockchainData.swift in Sources */,
+				C6D8C5B72A2254DE0057D42E /* KeyData.swift in Sources */,
+				C6D8C5C12A2256D60057D42E /* ConnectToPeerView.swift in Sources */,
 				C6D8C5A42A2193570057D42E /* MerkleProof.swift in Sources */,
+				C6D8C5BF2A2256CE0057D42E /* ListPeersView.swift in Sources */,
+				C6D8C5B42A2254450057D42E /* BDKManager.swift in Sources */,
+				C6D8C5B02A2252B40057D42E /* MyChannelManagerPersister.swift in Sources */,
+				C6D8C5BB2A22569C0057D42E /* TabBarView.swift in Sources */,
 				C6D8C5802A215B290057D42E /* Vajra_WalletApp.swift in Sources */,
+				C6D8C5B22A2254120057D42E /* LDKManager.swift in Sources */,
+				C6D8C5C72A2256E90057D42E /* ListUsableChannelsView.swift in Sources */,
 				C6D8C5A62A21936C0057D42E /* Tx.swift in Sources */,
 				C6D8C5A02A2193020057D42E /* DataGetPost.swift in Sources */,
 				C6D8C59A2A215E6C0057D42E /* MyPersister.swift in Sources */,
+				C6D8C5C52A2256E20057D42E /* ListChannelsView.swift in Sources */,
+				C6D8C5C32A2256DC0057D42E /* OpenChannelView.swift in Sources */,
 				C6D8C5962A215D430057D42E /* MyLogger.swift in Sources */,
 				C6D8C5982A215D540057D42E /* MyBroadcaster.swift in Sources */,
+				C6D8C5BD2A2256B40057D42E /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
