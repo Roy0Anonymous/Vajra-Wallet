@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct WalletView: View {
     @EnvironmentObject var ldkManager: LDKManager
     @State private var receiveAddress: String?
     @State private var hasAppeared = false

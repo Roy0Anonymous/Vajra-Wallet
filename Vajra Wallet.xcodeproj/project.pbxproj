@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C6D8C5802A215B290057D42E /* Vajra_WalletApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C57F2A215B290057D42E /* Vajra_WalletApp.swift */; };
-		C6D8C5822A215B290057D42E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5812A215B290057D42E /* ContentView.swift */; };
+		C6D8C5822A215B290057D42E /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5812A215B290057D42E /* WalletView.swift */; };
 		C6D8C5842A215B2A0057D42E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D8C5832A215B2A0057D42E /* Assets.xcassets */; };
 		C6D8C5872A215B2A0057D42E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D8C5862A215B2A0057D42E /* Preview Assets.xcassets */; };
 		C6D8C58F2A215CE60057D42E /* LightningDevKit in Frameworks */ = {isa = PBXBuildFile; productRef = C6D8C58E2A215CE60057D42E /* LightningDevKit */; };
@@ -36,12 +36,13 @@
 		C6D8C5C52A2256E20057D42E /* ListChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5C42A2256E20057D42E /* ListChannelsView.swift */; };
 		C6D8C5C72A2256E90057D42E /* ListUsableChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5C62A2256E90057D42E /* ListUsableChannelsView.swift */; };
 		C6D8C5C92A2257680057D42E /* CreateWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5C82A2257680057D42E /* CreateWalletView.swift */; };
+		C6D8C5E72A22AF2F0057D42E /* RecoveryPhraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5E62A22AF2F0057D42E /* RecoveryPhraseView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C6D8C57C2A215B290057D42E /* Vajra Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Vajra Wallet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6D8C57F2A215B290057D42E /* Vajra_WalletApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vajra_WalletApp.swift; sourceTree = "<group>"; };
-		C6D8C5812A215B290057D42E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C6D8C5812A215B290057D42E /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
 		C6D8C5832A215B2A0057D42E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C6D8C5862A215B2A0057D42E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C6D8C5932A215D290057D42E /* MyFeeEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFeeEstimator.swift; sourceTree = "<group>"; };
@@ -67,6 +68,7 @@
 		C6D8C5C42A2256E20057D42E /* ListChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListChannelsView.swift; sourceTree = "<group>"; };
 		C6D8C5C62A2256E90057D42E /* ListUsableChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListUsableChannelsView.swift; sourceTree = "<group>"; };
 		C6D8C5C82A2257680057D42E /* CreateWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletView.swift; sourceTree = "<group>"; };
+		C6D8C5E62A22AF2F0057D42E /* RecoveryPhraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,13 +163,14 @@
 			children = (
 				C6D8C5BA2A22569C0057D42E /* TabBarView.swift */,
 				C6D8C5C82A2257680057D42E /* CreateWalletView.swift */,
-				C6D8C5812A215B290057D42E /* ContentView.swift */,
+				C6D8C5812A215B290057D42E /* WalletView.swift */,
 				C6D8C5BC2A2256B40057D42E /* SettingsView.swift */,
 				C6D8C5BE2A2256CE0057D42E /* ListPeersView.swift */,
 				C6D8C5C02A2256D60057D42E /* ConnectToPeerView.swift */,
 				C6D8C5C22A2256DC0057D42E /* OpenChannelView.swift */,
 				C6D8C5C42A2256E20057D42E /* ListChannelsView.swift */,
 				C6D8C5C62A2256E90057D42E /* ListUsableChannelsView.swift */,
+				C6D8C5E62A22AF2F0057D42E /* RecoveryPhraseView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -258,7 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6D8C5822A215B290057D42E /* ContentView.swift in Sources */,
+				C6D8C5822A215B290057D42E /* WalletView.swift in Sources */,
 				C6D8C5942A215D290057D42E /* MyFeeEstimator.swift in Sources */,
 				C6D8C5C92A2257680057D42E /* CreateWalletView.swift in Sources */,
 				C6D8C5AC2A2196CB0057D42E /* FileHandler.swift in Sources */,
@@ -282,6 +285,7 @@
 				C6D8C5C32A2256DC0057D42E /* OpenChannelView.swift in Sources */,
 				C6D8C5962A215D430057D42E /* MyLogger.swift in Sources */,
 				C6D8C5982A215D540057D42E /* MyBroadcaster.swift in Sources */,
+				C6D8C5E72A22AF2F0057D42E /* RecoveryPhraseView.swift in Sources */,
 				C6D8C5BD2A2256B40057D42E /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

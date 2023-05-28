@@ -11,9 +11,9 @@ struct TabBarView: View {
     @EnvironmentObject var ldkManager: LDKManager
     var body: some View {
         TabView {
-            ContentView()
+            WalletView()
                 .tabItem {
-                    Label("Transfer", systemImage: "paperplane.fill")
+                    Label("Wallet", systemImage: "wallet.pass")
                 }
                 .environmentObject(ldkManager)
             SettingsView()

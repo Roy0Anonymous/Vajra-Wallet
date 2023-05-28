@@ -175,9 +175,11 @@ public class BDKManager: ObservableObject {
             print("Failed to get Block Hash \(error)")
             return nil
         }
-        
     }
     
+    public func getRecoveryPhrase() -> String? {
+        return mnemonic.asString()
+    }
 }
 
 public enum SyncState: String {
