@@ -46,10 +46,13 @@ struct SettingsView: View {
                             SettingsText(text: "Open a Channel")
                         }
                         NavigationLink (destination: ListChannelsView()) {
-                            SettingsText(text: "List Channel")
+                            SettingsText(text: "List Channels")
                         }
-                        NavigationLink (destination: ListUsableChannelsView()) {
-                            SettingsText(text: "List Usable Channel")
+                        NavigationLink (destination: SendPaymentView()) {
+                            SettingsText(text: "Send Payment")
+                        }
+                        NavigationLink (destination: GenerateInvoiceView()) {
+                            SettingsText(text: "Generate Invoice")
                         }
                     }
                     Text("On Chain Wallet")

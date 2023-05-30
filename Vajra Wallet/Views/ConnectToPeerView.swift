@@ -37,24 +37,6 @@ struct ConnectToPeerView: View {
             .alert(isPresented: $connected) {
                 Alert(title: Text("Connected to Peer"))
             }
-
-//            Button("Connect") {
-//                guard let port = NumberFormatter().number(from: port) else {
-//                    print("Wrong Port")
-//                    return
-//                }
-//                do {
-//                    // Change later
-////                    try connected = ldkManager.connect(nodeId: nodeId, address: host, port: port)
-//                    // "02c4ae0b56bad8dc502326a479c0d8a820b0acc7c5470a056da050cedd84afbd36" 9937
-//                    try connected = ldkManager.connect(nodeId: nodeId, address: "127.0.0.1", port: port)
-//                } catch {
-//                    print(error)
-//                }
-//            }
-//            .alert(isPresented: $connected) {
-//                Alert(title: Text("Connected to Peer"))
-//            }
         }
         .navigationTitle(Text("Connect to Peer"))
     }

@@ -13,9 +13,16 @@ struct OpenChannelView: View {
     var body: some View {
         VStack {
             CustomTextField(track: $nodeId, name: "Node Id")
-            Button("Connect") {
+            Button {
                 print(ldkManager.openChannel(nodeId: nodeId, amount: 10000000, pushMsat: 10000) ? "Channel Opened" : "Failed to Open Channel")
+            } label: {
+                Text("Connect")
+                    .frame(width: 150, height: 50, alignment: .center)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+                    .foregroundColor(.white)
             }
+
         }
     }
 }

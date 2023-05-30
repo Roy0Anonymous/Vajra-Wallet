@@ -78,6 +78,7 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
     }
 
     override func persistManager(channelManager: Bindings.ChannelManager) -> Bindings.Result_NoneErrorZ {
+        print("Persisting Channel Manager")
         let channel_manager_bytes = channelManager.write()
         do {
             let data = Data(channel_manager_bytes)
@@ -91,6 +92,7 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
     }
     
     override func persistGraph(networkGraph: NetworkGraph) -> Result_NoneErrorZ {
+        print("Persisting Network Graph")
         do {
             let network_graph_bytes = networkGraph.write()
             try FileHandler.writeData(data: Data(network_graph_bytes), path: "network_graph")
@@ -103,6 +105,7 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
     }
     
     override func persistScorer(scorer: WriteableScore) -> Result_NoneErrorZ {
+        print("Persisting Scorer")
         do {
             let scorerBytes = scorer.write()
             try FileHandler.writeData(data: Data(scorerBytes), path: "probabilistic_scorer")

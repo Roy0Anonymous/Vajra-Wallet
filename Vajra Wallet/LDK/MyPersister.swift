@@ -9,6 +9,7 @@ import LightningDevKit
 
 class MyPersister: Persist {
     override func persistNewChannel(channelId: Bindings.OutPoint, data: Bindings.ChannelMonitor, updateId: Bindings.MonitorUpdateId) -> Bindings.ChannelMonitorUpdateStatus {
+        print("Persisting New Channel")
         let idBytes: [UInt8] = channelId.write()
         let monitorBytes: [UInt8] = data.write()
         do {
@@ -25,6 +26,7 @@ class MyPersister: Persist {
     }
     
     override func updatePersistedChannel(channelId: OutPoint, update: ChannelMonitorUpdate, data: ChannelMonitor, updateId: MonitorUpdateId) -> ChannelMonitorUpdateStatus {
+        print("Updating Persisted Channel")
         let idBytes: [UInt8] = channelId.write()
         let monitorBytes: [UInt8] = data.write()
         do {

@@ -68,52 +68,43 @@ public class LDKManager: ObservableObject {
     
     public init() {
         print("LDK Setup Started")
-       
+
         network = Bindings.Network.Regtest
         currency = Bindings.Currency.Regtest
         self.bdkManager = BDKManager()
-        do {
-            let keyData = try getKeyData()
-            let descriptor = try Descriptor(descriptor: keyData.descriptor, network: bdkManager.network)
-            bdkManager.loadWallet(descriptor: descriptor, changeDescriptor: nil)
-        } catch {
-            print(error)
-        }
-        
-        bdkManager.sync()
-        
+
         let feeEstimator = MyFeeEstimator()
-        
+
         logger = MyLogger()
         let broadcaster = MyBroacaster()
         let persister = MyPersister()
         filter = MyFilter()
-        
+
         chainMonitor = ChainMonitor(chainSource: filter, broadcaster: broadcaster, logger: logger, feeest: feeEstimator, persister: persister)
-        
+
         let seed = bdkManager.getPrivKey()
         let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
         let timestampNanos = UInt32.init(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
-    
+
         keysManager = KeysManager(seed: seed, startingTimeSecs: timestampSeconds, startingTimeNanos: timestampNanos)
-        
+
         let userConfig = UserConfig.initWithDefault()
         let newChannelConfig = ChannelConfig.initWithDefault()
         newChannelConfig.setForwardingFeeProportionalMillionths(val: 10000)
         newChannelConfig.setForwardingFeeBaseMsat(val: 1000)
         userConfig.setChannelConfig(val: newChannelConfig)
-        
+
         let channelHandshakeConfig = ChannelHandshakeConfig.initWithDefault()
         channelHandshakeConfig.setMinimumDepth(val: 1)
         channelHandshakeConfig.setAnnouncedChannel(val: false)
         userConfig.setChannelHandshakeConfig(val: channelHandshakeConfig)
-        
+
         var netGraph: NetworkGraph
         if FileHandler.fileExists(path: "network_graph") {
             do {
                 let file = try FileHandler.readData(path: "network_graph")
                 let readResult = NetworkGraph.read(ser: [UInt8](file), arg: logger)
-                
+
                 if readResult.isOk() {
                     netGraph = readResult.getValue()!
                     print("Network Graph loaded")
@@ -130,18 +121,18 @@ public class LDKManager: ObservableObject {
             netGraph = NetworkGraph(network: self.network, logger: logger)
             print("New Network Graph Created")
         }
-        
+
         if FileHandler.fileExists(path: "probabilistic_scorer") {
             do {
                 let file = try FileHandler.readData(path: "probabilistic_scorer")
-                
+
                 let scoringParams = ProbabilisticScoringParameters.initWithDefault()
                 let scorerReadResult = ProbabilisticScorer.read(ser: [UInt8](file), argA: scoringParams, argB: netGraph, argC: logger)
-                
+
                 guard let readResult = scorerReadResult.getValue() else {
                     throw LightningError.probabilisticScorer(msg: "failed to load probabilsticScorer")
                 }
-                
+
                 let probabilisticScorer = readResult
                 let score = probabilisticScorer.asScore()
                 self.scorer = MultiThreadedLockableScore(score: score)
@@ -162,7 +153,7 @@ public class LDKManager: ObservableObject {
             self.scorer = MultiThreadedLockableScore(score: score)
             print("Probabilistic Scorer loaded and running")
         }
-        
+
         var serializedChannelManager: [UInt8] = [UInt8]()
         if FileHandler.fileExists(path: "channel_manager") {
             do {
@@ -175,7 +166,7 @@ public class LDKManager: ObservableObject {
         } else {
             print("Serialized Channel Manager not Available")
         }
-        
+
         var serializedChannelMonitors: [[UInt8]] = [[UInt8]]()
         if FileHandler.fileExists(path: "channels") {
             do {
@@ -192,23 +183,24 @@ public class LDKManager: ObservableObject {
         } else {
             print("Serialized Channel Monitors not Available")
         }
-        
-        let channelManagerConstructionParameters = ChannelManagerConstructionParameters(config: userConfig, entropySource: keysManager!.asEntropySource(), nodeSigner: keysManager!.asNodeSigner(), signerProvider: keysManager!.asSignerProvider(), feeEstimator: feeEstimator, chainMonitor: chainMonitor!, txBroadcaster: broadcaster, logger: logger)
-        
+
+        let channelManagerConstructionParameters = ChannelManagerConstructionParameters(config: userConfig, entropySource: keysManager!.asEntropySource(), nodeSigner: keysManager!.asNodeSigner(), signerProvider: keysManager!.asSignerProvider(), feeEstimator: feeEstimator, chainMonitor: chainMonitor!, txBroadcaster: broadcaster, logger: logger, enableP2PGossip: true, scorer: scorer)
+
+
         let latestBlockHash = Utils.hexStringToByteArray(bdkManager.getBlockHash()!)
         let latestBlockHeight = bdkManager.getBlockHeight()!
-        
+
         if !serializedChannelManager.isEmpty {
             do {
                 self.channelManagerConstructor = try ChannelManagerConstructor(channelManagerSerialized: serializedChannelManager, channelMonitorsSerialized: serializedChannelMonitors, networkGraph: NetworkGraphArgument.instance(netGraph), filter: filter, params: channelManagerConstructionParameters)
                 print("Channel Manager Constructor Loaded")
             } catch {
                 print("Failed to load Channel Manager Constructor, creating new one")
-                self.channelManagerConstructor = ChannelManagerConstructor(network: network, currentBlockchainTipHash: latestBlockHash, currentBlockchainTipHeight: latestBlockHeight, netGraph: router, params: channelManagerConstructionParameters)
+                self.channelManagerConstructor = ChannelManagerConstructor(network: network, currentBlockchainTipHash: latestBlockHash, currentBlockchainTipHeight: latestBlockHeight, netGraph: netGraph, params: channelManagerConstructionParameters)
                 print("New Channel Manager Constructor Created")
             }
         } else {
-            self.channelManagerConstructor = ChannelManagerConstructor(network: network, currentBlockchainTipHash: latestBlockHash, currentBlockchainTipHeight: latestBlockHeight, netGraph: router, params: channelManagerConstructionParameters)
+            self.channelManagerConstructor = ChannelManagerConstructor(network: network, currentBlockchainTipHash: latestBlockHash, currentBlockchainTipHeight: latestBlockHeight, netGraph: netGraph, params: channelManagerConstructionParameters)
             print("New Channel Manager Constructor Created")
         }
         self.channelManager = channelManagerConstructor?.channelManager
@@ -219,7 +211,7 @@ public class LDKManager: ObservableObject {
         channelManagerPersister?.ldkManager = self
         subscribeToInnerObject()
         self.sync()
-        
+
         print("LDK Setup Finished")
     }
     
@@ -466,6 +458,29 @@ public class LDKManager: ObservableObject {
         return createChannelResults!.isOk()
     }
     
+    func sendPayment(invoice: String) -> Bool {
+        let invoiceResult = Invoice.fromStr(s: invoice)
+        guard let invoice = invoiceResult.getValue(), let channelManager = self.channelManager else {
+            print("Could not parse invoice")
+            return false
+        }
+
+        let invoicePaymentResult = Bindings.payInvoice(invoice: invoice, retryStrategy: Bindings.Retry.initWithTimeout(a: 15), channelmanager: channelManager)
+
+        if invoicePaymentResult.isOk() {
+            return true
+        }
+        return false
+    }
+    
+    func generateInvoice(amount: UInt64, expiry: UInt32) -> String? {
+        let invoice = Bindings.createInvoiceFromChannelmanager(channelmanager: channelManager!, nodeSigner: keysManager!.asNodeSigner(), logger: logger, network: currency, amtMsat: amount, description: "Test Invoice", invoiceExpiryDeltaSecs: expiry, minFinalCltvExpiryDelta: nil)
+        if invoice.isOk() {
+            return invoice.getValue()!.toStr()
+        }
+        print("Could not create Invoice")
+        return nil
+    }
 }
 
 public enum LightningError: Error {

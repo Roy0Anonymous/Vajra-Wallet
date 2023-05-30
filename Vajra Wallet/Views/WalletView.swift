@@ -37,6 +37,7 @@ struct WalletView: View {
             Text(receiveAddress ?? "No Address Found")
             Spacer()
         }
+        .multilineTextAlignment(.center)
         .padding()
         .onAppear {
             if !hasAppeared {
