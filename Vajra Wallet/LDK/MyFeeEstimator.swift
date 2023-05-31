@@ -10,12 +10,12 @@ import LightningDevKit
 class MyFeeEstimator: FeeEstimator {
     override func getEstSatPer1000Weight(confirmationTarget: Bindings.ConfirmationTarget) -> UInt32 {
         if confirmationTarget == .Background {
-            return 12500
+            return 1250
         } else if confirmationTarget == .Normal {
-            return 12500
+            return 1250
         } else if confirmationTarget == .HighPriority {
-            return 12500
+            return 1250
         }
-        return 12500
+        return 1250
     }
 }

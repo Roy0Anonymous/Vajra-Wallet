@@ -46,7 +46,7 @@ public class LDKManager: ObservableObject {
     // port number for lightning
     let port = UInt16(9735)
     
-    // which currency will be setup?  Testnet or Bitcoin?
+    // which currency will be setup?  Testnet or Regtest?
     let currency: Bindings.Currency
 
     // Bitcoin network, or the Testnet network
@@ -66,13 +66,26 @@ public class LDKManager: ObservableObject {
     }
     
     
-    public init() {
+    public init(net: Bindings.Network) {
         print("LDK Setup Started")
-
-        network = Bindings.Network.Regtest
-        currency = Bindings.Currency.Regtest
-        self.bdkManager = BDKManager()
-
+        
+        if net == .Regtest {
+            network = Bindings.Network.Regtest
+            currency = Bindings.Currency.Regtest
+            self.bdkManager = BDKManager(net: .regtest)
+        } else {
+            network = Bindings.Network.Testnet
+            currency = Bindings.Currency.BitcoinTestnet
+            self.bdkManager = BDKManager(net: .testnet)
+        }
+        do {
+            let keyData = try getKeyData()
+            let descriptor = try Descriptor(descriptor: keyData.descriptor, network: bdkManager.network)
+            bdkManager.loadWallet(descriptor: descriptor, changeDescriptor: nil)
+        } catch let error {
+            debugPrint(error)
+        }
+        bdkManager.sync()
         let feeEstimator = MyFeeEstimator()
 
         logger = MyLogger()
@@ -189,7 +202,9 @@ public class LDKManager: ObservableObject {
 
         let latestBlockHash = Utils.hexStringToByteArray(bdkManager.getBlockHash()!)
         let latestBlockHeight = bdkManager.getBlockHeight()!
-
+        print("Latest Block Hash: \(latestBlockHash)")
+        print("Latest Block Hash: \(latestBlockHeight)")
+        
         if !serializedChannelManager.isEmpty {
             do {
                 self.channelManagerConstructor = try ChannelManagerConstructor(channelManagerSerialized: serializedChannelManager, channelMonitorsSerialized: serializedChannelMonitors, networkGraph: NetworkGraphArgument.instance(netGraph), filter: filter, params: channelManagerConstructionParameters)
@@ -209,9 +224,10 @@ public class LDKManager: ObservableObject {
         self.router = channelManagerConstructor?.netGraph
         self.channelManagerPersister = MyChannelManagerPersister()
         channelManagerPersister?.ldkManager = self
+        broadcaster.ldkManager = self
         subscribeToInnerObject()
         self.sync()
-
+//
         print("LDK Setup Finished")
     }
     
@@ -237,12 +253,12 @@ public class LDKManager: ObservableObject {
         // Sync unconfirmed Transactions
         for txId in relevantTxIds {
             let txId = Utils.bytesToHex(bytes: txId)
-            let tx = BlockchainData.getTx(txid: txId)
+            let tx = BlockchainData.getTx(txid: txId, network: network)
             if let tx = tx {
                 if tx.status.confirmed {
-                    let txHex = BlockchainData.getTxHex(txid: txId)!
-                    let blockHeader = BlockchainData.getBlockHeader(hash: tx.status.block_hash)
-                    let merkleProof = BlockchainData.getMerkleProof(txid: txId)!
+                    let txHex = BlockchainData.getTxHex(txid: txId, network: network)!
+                    let blockHeader = BlockchainData.getBlockHeader(hash: tx.status.block_hash, network: network)
+                    let merkleProof = BlockchainData.getMerkleProof(txid: txId, network: network)!
                     if tx.status.block_height == merkleProof.block_height {
                         let newConfirmedTx = ConfirmedTx(tx: Utils.hexStringToByteArray(txHex), block_height: tx.status.block_height, block_header: blockHeader!, merkle_proof_pos: merkleProof.pos)
                         confirmedTxs.append(newConfirmedTx)
@@ -258,11 +274,11 @@ public class LDKManager: ObservableObject {
         if let filteredTxIds = filter?.txIds {
             for txId in filteredTxIds {
                 let txIdHex = Utils.bytesToHex32Reversed(bytes: Utils.array_to_tuple32(array: txId))
-                let tx = BlockchainData.getTx(txid: txIdHex)
+                let tx = BlockchainData.getTx(txid: txIdHex, network: network)
                 if let tx = tx, tx.status.confirmed {
-                    let txHex = BlockchainData.getTxHex(txid: txIdHex)!
-                    let blockHeader = BlockchainData.getBlockHeader(hash: tx.status.block_hash)!
-                    let merkleProof = BlockchainData.getMerkleProof(txid: txIdHex)!
+                    let txHex = BlockchainData.getTxHex(txid: txIdHex, network: network)!
+                    let blockHeader = BlockchainData.getBlockHeader(hash: tx.status.block_hash, network: network)!
+                    let merkleProof = BlockchainData.getMerkleProof(txid: txIdHex, network: network)!
                     if tx.status.block_height == merkleProof.block_height {
                         let newConfirmedTx = ConfirmedTx(tx: Utils.hexStringToByteArray(txHex), block_height: tx.status.block_height, block_header: blockHeader, merkle_proof_pos: merkleProof.pos)
                         confirmedTxs.append(newConfirmedTx)
@@ -279,13 +295,13 @@ public class LDKManager: ObservableObject {
                 let txIdHex = Utils.bytesToHex32Reversed(bytes: Utils.array_to_tuple32(array: txId!))
                 let outputIdx = outpoint.getIndex()
                 
-                if let res = BlockchainData.outSpend(txid: txIdHex, index: outputIdx) {
+                if let res = BlockchainData.outSpend(txid: txIdHex, index: outputIdx, network: network) {
                     if res.spent {
-                        let tx = BlockchainData.getTx(txid: res.txid!)
+                        let tx = BlockchainData.getTx(txid: res.txid!, network: network)
                         if let tx = tx, tx.status.confirmed {
-                            let txHex = BlockchainData.getTxHex(txid: txIdHex)!
-                            let blockHeader = BlockchainData.getBlockHeader(hash: tx.status.block_hash)!
-                            let merkleProof = BlockchainData.getMerkleProof(txid: txIdHex)!
+                            let txHex = BlockchainData.getTxHex(txid: txIdHex, network: network)!
+                            let blockHeader = BlockchainData.getBlockHeader(hash: tx.status.block_hash, network: network)!
+                            let merkleProof = BlockchainData.getMerkleProof(txid: txIdHex, network: network)!
                             if tx.status.block_height == merkleProof.block_height {
                                 let newConfirmedTx = ConfirmedTx(tx: Utils.hexStringToByteArray(txHex), block_height: tx.status.block_height, block_header: blockHeader, merkle_proof_pos: merkleProof.pos)
                                 confirmedTxs.append(newConfirmedTx)
@@ -326,9 +342,9 @@ public class LDKManager: ObservableObject {
     }
 
     func syncBestBlockConnected() {
-        let height = BlockchainData.getTipHeight()
-        let hash = BlockchainData.getTipHash()
-        let header = BlockchainData.getBlockHeader(hash: hash!)
+        let height = BlockchainData.getTipHeight(network: network)
+        let hash = BlockchainData.getTipHash(network: network)
+        let header = BlockchainData.getBlockHeader(hash: hash!, network: network)
         
         channelManager?.asConfirm().bestBlockUpdated(header: Utils.hexStringToByteArray(header!), height: UInt32(height!))
         chainMonitor?.asConfirm().bestBlockUpdated(header: Utils.hexStringToByteArray(header!), height: UInt32(height!))
@@ -455,6 +471,7 @@ public class LDKManager: ObservableObject {
         if createChannelResults == nil {
             return false
         }
+        print(createChannelResults?.getError()?.getValueAsApiMisuseError()?.getErr())
         return createChannelResults!.isOk()
     }
     
@@ -480,6 +497,11 @@ public class LDKManager: ObservableObject {
         }
         print("Could not create Invoice")
         return nil
+    }
+    
+    func closeChannel(channelId: [UInt8], counterpartyNodeId: [UInt8]) -> Bool {
+        let res = channelManager?.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
+        return res!.isOk()
     }
 }
 

@@ -54,6 +54,9 @@ struct SettingsView: View {
                         NavigationLink (destination: GenerateInvoiceView()) {
                             SettingsText(text: "Generate Invoice")
                         }
+                        NavigationLink (destination: CloseChannelView()) {
+                            SettingsText(text: "Close Channel")
+                        }
                     }
                     Text("On Chain Wallet")
                         .font(.title3)
@@ -64,6 +67,9 @@ struct SettingsView: View {
                     VStack(spacing: 15) {
                         NavigationLink (destination: RecoveryPhraseView()) {
                             SettingsText(text: "Recovery Phrase")
+                        }
+                        NavigationLink (destination: SendPaymentOnChainView()) {
+                            SettingsText(text: "Send Payment On-chain")
                         }
                     }
                 }

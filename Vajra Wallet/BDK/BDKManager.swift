@@ -23,21 +23,30 @@ public class BDKManager: ObservableObject {
     private let blockchainConfig: BlockchainConfig
     private var blockchain: Blockchain?
     
-    init() {
+    init(net: Network) {
         print("BDK Setup Started")
-        self.network = Network.regtest
+        self.network = net
         self.databaseConfig = DatabaseConfig.memory
-        let esploraConfig = EsploraConfig(baseUrl: "http://127.0.0.1:3002", proxy: nil, concurrency: 5, stopGap: 20, timeout: nil)
+        let testnetURL = "https://blockstream.info/testnet/api"// "https://mutinynet.com/api"
+        let regtestURL = "http://127.0.0.1:3002"
+        let esploraConfig = EsploraConfig(baseUrl: network == .regtest ? regtestURL : testnetURL, proxy: nil, concurrency: 5, stopGap: 20, timeout: nil)
         self.blockchainConfig = BlockchainConfig.esplora(config: esploraConfig)
+//        if net == .regtest {
+//            let esploraConfig = EsploraConfig(baseUrl: "http://127.0.0.1:3002", proxy: nil, concurrency: 5, stopGap: 20, timeout: nil)
+//            self.blockchainConfig = BlockchainConfig.esplora(config: esploraConfig)
+//        } else {
+//            let electrumConfig = ElectrumConfig(url: "ssl://mempool.space:60602", socks5: nil, retry: 5, timeout: nil, stopGap: 10, validateDomain: false)
+//            self.blockchainConfig = BlockchainConfig.electrum(config: electrumConfig)
+//        }
         self.mnemonic = Mnemonic(wordCount: WordCount.words12)
         self.descriptorSecretKey = DescriptorSecretKey(
-            network: Network.regtest,
+            network: net,
             mnemonic: mnemonic,
             password: nil)
         self.descriptor = Descriptor.newBip84(
             secretKey: descriptorSecretKey,
             keychain: KeychainKind.external,
-            network: Network.regtest)
+            network: net)
         do {
             self.blockchain = try Blockchain(config: blockchainConfig)
         } catch {

@@ -16,6 +16,7 @@ struct ConnectToPeerView: View {
     var body: some View {
         VStack(spacing: 10) {
             CustomTextField(track: $nodeId, name: "Node Id")
+            CustomTextField(track: $host, name: "Host")
             CustomTextField(track: $port, name: "Port")
             Button {
                 guard let port = NumberFormatter().number(from: port) else {
@@ -23,7 +24,7 @@ struct ConnectToPeerView: View {
                     return
                 }
                 do {
-                    connected = try ldkManager.connect(nodeId: nodeId, address: "127.0.0.1", port: port)
+                    connected = try ldkManager.connect(nodeId: nodeId, address: host, port: port)
                 } catch {
                     print(error)
                 }

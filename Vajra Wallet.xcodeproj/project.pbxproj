@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C65690BA2A27FB5D002B013B /* SendPaymentOnChainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65690B92A27FB5D002B013B /* SendPaymentOnChainView.swift */; };
+		C6972C492A26B3CF00BBA785 /* CloseChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6972C482A26B3CF00BBA785 /* CloseChannelView.swift */; };
 		C6D8C5802A215B290057D42E /* Vajra_WalletApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C57F2A215B290057D42E /* Vajra_WalletApp.swift */; };
 		C6D8C5822A215B290057D42E /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5812A215B290057D42E /* WalletView.swift */; };
 		C6D8C5842A215B2A0057D42E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D8C5832A215B2A0057D42E /* Assets.xcassets */; };
@@ -41,6 +43,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C65690B92A27FB5D002B013B /* SendPaymentOnChainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentOnChainView.swift; sourceTree = "<group>"; };
+		C6972C482A26B3CF00BBA785 /* CloseChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseChannelView.swift; sourceTree = "<group>"; };
 		C6D8C57C2A215B290057D42E /* Vajra Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Vajra Wallet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6D8C57F2A215B290057D42E /* Vajra_WalletApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vajra_WalletApp.swift; sourceTree = "<group>"; };
 		C6D8C5812A215B290057D42E /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
@@ -173,7 +177,9 @@
 				C6D8C5C42A2256E20057D42E /* ListChannelsView.swift */,
 				C6EA67502A25038A00A6867D /* SendPaymentView.swift */,
 				C6EA67542A256E5800A6867D /* GenerateInvoiceView.swift */,
+				C6972C482A26B3CF00BBA785 /* CloseChannelView.swift */,
 				C6D8C5E62A22AF2F0057D42E /* RecoveryPhraseView.swift */,
+				C65690B92A27FB5D002B013B /* SendPaymentOnChainView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -275,6 +281,8 @@
 				C6D8C5B72A2254DE0057D42E /* KeyData.swift in Sources */,
 				C6D8C5C12A2256D60057D42E /* ConnectToPeerView.swift in Sources */,
 				C6D8C5A42A2193570057D42E /* MerkleProof.swift in Sources */,
+				C6972C492A26B3CF00BBA785 /* CloseChannelView.swift in Sources */,
+				C65690BA2A27FB5D002B013B /* SendPaymentOnChainView.swift in Sources */,
 				C6D8C5BF2A2256CE0057D42E /* ListPeersView.swift in Sources */,
 				C6D8C5B42A2254450057D42E /* BDKManager.swift in Sources */,
 				C6D8C5B02A2252B40057D42E /* MyChannelManagerPersister.swift in Sources */,

@@ -8,8 +8,14 @@
 import LightningDevKit
 
 class MyBroacaster: BroadcasterInterface {
+    var ldkManager: LDKManager? = nil
     override func broadcastTransaction(tx: [UInt8]) {
-        let txId = BlockchainData.broadcastTx(tx: tx)
+        var txId: String?
+        if ldkManager!.network == .Regtest {
+            txId = BlockchainData.broadcastTx(tx: tx, network: .Regtest)
+        } else {
+            txId = BlockchainData.broadcastTx(tx: tx, network: .Signet)
+        }
         print("Broadcast Transaction TxId: \(String(describing: txId))")
     }
 }

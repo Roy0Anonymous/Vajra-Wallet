@@ -6,14 +6,22 @@
 //
 
 import Foundation
+import LightningDevKit
 
 class BlockchainData {
-    static func broadcastTx(tx: [UInt8]) -> String? {
+    static func broadcastTx(tx: [UInt8], network: Network) -> String? {
         print("Broadcasting Transaction")
-        guard let url = URL(string: "http://127.0.0.1:3002/tx") else {
-            print("Invalid URL")
-            return nil
+        var url: URL
+        if network == .Regtest {
+            url = URL(string: "http://127.0.0.1:3002/tx")!
+        } else {
+//            url = URL(string: "https://mutinynet.com/api/tx")!
+            url = URL(string: "https://blockstream.info/testnet/api/tx")!
         }
+//        guard let url = URL(string: "http://127.0.0.1:3002/tx") else {
+//            print("Invalid URL")
+//            return nil
+//        }
         do {
             let res = try DataGetPost.post(url: url, body: Utils.bytesToHex(bytes: tx))
             guard let res = res else {
@@ -28,11 +36,18 @@ class BlockchainData {
         }
     }
 
-    static func getTx(txid: String) -> Tx? {
+    static func getTx(txid: String, network: Network) -> Tx? {
         print("Getting Transaction")
-        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)") else {
-            debugPrint("Invalid URL")
-            return nil
+//        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)") else {
+//            debugPrint("Invalid URL")
+//            return nil
+//        }
+        var url: URL
+        if network == .Regtest {
+            url = URL(string: "http://127.0.0.1:3002/tx/\(txid)")!
+        } else {
+//            url = URL(string: "https://mutinynet.com/api/tx/\(txid)")!
+            url = URL(string: "https://blockstream.info/testnet/api/tx/\(txid)")!
         }
         let decoder = JSONDecoder()
         do {
@@ -49,11 +64,18 @@ class BlockchainData {
         }
     }
 
-    static func getTxHex(txid: String) -> String? {
+    static func getTxHex(txid: String, network: Network) -> String? {
         print("Getting Transaction Hex")
-        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/hex") else {
-            print("Invalid URL")
-            return nil
+//        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/hex") else {
+//            print("Invalid URL")
+//            return nil
+//        }
+        var url: URL
+        if network == .Regtest {
+            url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/hex")!
+        } else {
+//            url = URL(string: "https://mutinynet.com/api/tx/\(txid)/hex")!
+            url = URL(string: "https://blockstream.info/testnet/api/tx/\(txid)/hex")!
         }
         let data = DataGetPost.get(url: url)
         guard let data = data else {
@@ -63,11 +85,18 @@ class BlockchainData {
         return String(data: data, encoding: .utf8)!
     }
 
-    static func getBlockHeader(hash: String) -> String? {
+    static func getBlockHeader(hash: String, network: Network) -> String? {
         print("Getting Block Header")
-        guard let url = URL(string: "http://127.0.0.1:3002/block/\(hash)/header") else {
-            print("Invalid URL")
-            return nil
+//        guard let url = URL(string: "http://127.0.0.1:3002/block/\(hash)/header") else {
+//            print("Invalid URL")
+//            return nil
+//        }
+        var url: URL
+        if network == .Regtest {
+            url = URL(string: "http://127.0.0.1:3002/block/\(hash)/header")!
+        } else {
+//            url = URL(string: "https://mutinynet.com/api/block/\(hash)/header")!
+            url = URL(string: "https://blockstream.info/testnet/api/block/\(hash)/header")!
         }
         let data = DataGetPost.get(url: url)
         guard let data = data else {
@@ -77,11 +106,18 @@ class BlockchainData {
         return String(data: data, encoding: .utf8)!
     }
     
-    static func getMerkleProof(txid: String) -> MerkleProof? {
+    static func getMerkleProof(txid: String, network: Network) -> MerkleProof? {
         print("Getting Merkle Proof")
-        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/merkle-proof") else {
-            print("Invalid URL")
-            return nil
+//        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/merkle-proof") else {
+//            print("Invalid URL")
+//            return nil
+//        }
+        var url: URL
+        if network == .Regtest {
+            url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/merkle-proof")!
+        } else {
+//            url = URL(string: "https://mutinynet.com/api/tx/\(txid)/merkle-proof")!
+            url = URL(string: "https://blockstream.info/testnet/api/tx/\(txid)/merkle-proof")!
         }
         do {
             let data = DataGetPost.get(url: url)
@@ -98,11 +134,18 @@ class BlockchainData {
         }
     }
 
-    static func getTxStatus(txid: String) -> TxStatus? {
+    static func getTxStatus(txid: String, network: Network) -> TxStatus? {
         print("Getting Transaction Status")
-        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/status") else {
-            print("Invalid URL")
-            return nil
+//        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/status") else {
+//            print("Invalid URL")
+//            return nil
+//        }
+        var url: URL
+        if network == .Regtest {
+            url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/status")!
+        } else {
+//            url = URL(string: "https://mutinynet.com/api/tx/\(txid)/status")!
+            url = URL(string: "https://blockstream.info/testnet/api/tx/\(txid)/status")!
         }
         do {
             let data = DataGetPost.get(url: url)
@@ -119,21 +162,35 @@ class BlockchainData {
         }
     }
     
-    static func getTxRaw(txid: String) -> Data? {
+    static func getTxRaw(txid: String, network: Network) -> Data? {
         print("Getting Transaction Raw")
-        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/raw") else {
-            print("Invalid URL")
-            return nil
+//        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/raw") else {
+//            print("Invalid URL")
+//            return nil
+//        }
+        var url: URL
+        if network == .Regtest {
+            url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/raw")!
+        } else {
+//            url = URL(string: "https://mutinynet.com/api/tx/\(txid)/raw")!
+            url = URL(string: "https://blockstream.info/testnet/api/tx/\(txid)/raw")!
         }
         let data = DataGetPost.get(url: url)
         return data
     }
     
-    public static func outSpend(txid: String, index: UInt16) -> OutSpent? {
+    public static func outSpend(txid: String, index: UInt16, network: Network) -> OutSpent? {
         print("Getting OutSpend")
-        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/outspend/\(index)") else {
-            print("Invalid URL")
-            return nil
+//        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/outspend/\(index)") else {
+//            print("Invalid URL")
+//            return nil
+//        }
+        var url: URL
+        if network == .Regtest {
+            url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/outspend/\(index)")!
+        } else {
+//            url = URL(string: "https://mutinynet.com/api/tx/\(txid)/outspend\(index)")!
+            url = URL(string: "https://blockstream.info/testnet/api/tx/\(txid)/outspend/\(index)")!
         }
         do {
             let data = DataGetPost.get(url: url)
@@ -150,11 +207,18 @@ class BlockchainData {
         }
     }
     
-    static func getTipHeight() -> Int32? {
+    static func getTipHeight(network: Network) -> Int32? {
         print("Getting Tip Height")
-        guard let url = URL(string: "http://127.0.0.1:3002/blocks/tip/height") else {
-            print("Invalid URL")
-            return nil
+//        guard let url = URL(string: "http://127.0.0.1:3002/blocks/tip/height") else {
+//            print("Invalid URL")
+//            return nil
+//        }
+        var url: URL
+        if network == .Regtest {
+            url = URL(string: "http://127.0.0.1:3002/blocks/tip/height")!
+        } else {
+//            url = URL(string: "https://mutinynet.com/api/blocks/tip/height")!
+            url = URL(string: "https://blockstream.info/testnet/api/blocks/tip/height")!
         }
         let data = DataGetPost.get(url: url)
         guard let data = data else {
@@ -166,11 +230,18 @@ class BlockchainData {
         return res
     }
     
-    static func getTipHash() -> String? {
+    static func getTipHash(network: Network) -> String? {
         print("Getting Tip Hash")
-        guard let url = URL(string: "http://127.0.0.1:3002/blocks/tip/hash") else {
-            print("Invalid URL")
-            return nil
+//        guard let url = URL(string: "http://127.0.0.1:3002/blocks/tip/hash") else {
+//            print("Invalid URL")
+//            return nil
+//        }
+        var url: URL
+        if network == .Regtest {
+            url = URL(string: "http://127.0.0.1:3002/blocks/tip/hash")!
+        } else {
+//            url = URL(string: "https://mutinynet.com/api/blocks/tip/hash")!
+            url = URL(string: "https://blockstream.info/testnet/api/blocks/tip/hash")!
         }
         let data = DataGetPost.get(url: url)
         guard let data = data else {
