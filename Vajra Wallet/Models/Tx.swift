@@ -29,10 +29,11 @@ public struct TxStatus: Codable {
 }
 
 public struct ConfirmedTx {
+    let txId: String
     let tx: [UInt8]
     let block_height: Int32
     let block_header: String
-    let merkle_proof_pos: Int
+    let merkle_proof_pos: UInt
 }
 
 public struct OutSpent: Codable {

@@ -29,7 +29,6 @@
 		C6D8C5B02A2252B40057D42E /* MyChannelManagerPersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5AF2A2252B40057D42E /* MyChannelManagerPersister.swift */; };
 		C6D8C5B22A2254120057D42E /* LDKManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5B12A2254120057D42E /* LDKManager.swift */; };
 		C6D8C5B42A2254450057D42E /* BDKManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5B32A2254450057D42E /* BDKManager.swift */; };
-		C6D8C5B72A2254DE0057D42E /* KeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5B62A2254DE0057D42E /* KeyData.swift */; };
 		C6D8C5BB2A22569C0057D42E /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5BA2A22569C0057D42E /* TabBarView.swift */; };
 		C6D8C5BD2A2256B40057D42E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5BC2A2256B40057D42E /* SettingsView.swift */; };
 		C6D8C5BF2A2256CE0057D42E /* ListPeersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5BE2A2256CE0057D42E /* ListPeersView.swift */; };
@@ -64,7 +63,6 @@
 		C6D8C5AF2A2252B40057D42E /* MyChannelManagerPersister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChannelManagerPersister.swift; sourceTree = "<group>"; };
 		C6D8C5B12A2254120057D42E /* LDKManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDKManager.swift; sourceTree = "<group>"; };
 		C6D8C5B32A2254450057D42E /* BDKManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDKManager.swift; sourceTree = "<group>"; };
-		C6D8C5B62A2254DE0057D42E /* KeyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyData.swift; sourceTree = "<group>"; };
 		C6D8C5BA2A22569C0057D42E /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		C6D8C5BC2A2256B40057D42E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C6D8C5BE2A2256CE0057D42E /* ListPeersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPeersView.swift; sourceTree = "<group>"; };
@@ -145,7 +143,6 @@
 				C6D8C59F2A2193020057D42E /* DataGetPost.swift */,
 				C6D8C5A12A21933E0057D42E /* Utils.swift */,
 				C6D8C5AB2A2196CB0057D42E /* FileHandler.swift */,
-				C6D8C5B62A2254DE0057D42E /* KeyData.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -278,7 +275,6 @@
 				C6D8C5A22A21933E0057D42E /* Utils.swift in Sources */,
 				C6D8C59E2A2192CF0057D42E /* BlockchainData.swift in Sources */,
 				C6EA67512A25038A00A6867D /* SendPaymentView.swift in Sources */,
-				C6D8C5B72A2254DE0057D42E /* KeyData.swift in Sources */,
 				C6D8C5C12A2256D60057D42E /* ConnectToPeerView.swift in Sources */,
 				C6D8C5A42A2193570057D42E /* MerkleProof.swift in Sources */,
 				C6972C492A26B3CF00BBA785 /* CloseChannelView.swift in Sources */,

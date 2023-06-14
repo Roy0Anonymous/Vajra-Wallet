@@ -10,6 +10,6 @@ import LightningDevKit
 class MyLogger: Logger {
     override func log(record: Bindings.Record) {
         let rawLog = record.getArgs()
-        print(rawLog)
+        debugPrint(rawLog)
     }
 }

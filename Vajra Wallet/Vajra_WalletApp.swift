@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct Vajra_WalletApp: App {
-    @ObservedObject var ldkManager: LDKManager = LDKManager(net: .Testnet)
+    @ObservedObject var ldkManager: LDKManager = LDKManager(net: .Regtest)
     var body: some Scene {
         WindowGroup {
             if ldkManager.bdkManager.wallet == nil {

@@ -12,16 +12,10 @@ class MyPersister: Persist {
         print("Persisting New Channel")
         let idBytes: [UInt8] = channelId.write()
         let monitorBytes: [UInt8] = data.write()
-        do {
-            let data = Data(monitorBytes)
-            try FileHandler.createDirectory(path: "channels")
-            try FileHandler.writeData(data: data, path: "channels/\(Utils.bytesToHex(bytes: idBytes))")
-            print("persistNewChannel: successfully backup channel to channels/\(Utils.bytesToHex(bytes: idBytes))\n")
-        }
-        catch {
-            NSLog("persistNewChannel: problem saving channels/\(Utils.bytesToHex(bytes: idBytes))")
-            return .PermanentFailure
-        }
+        let data = Data(monitorBytes)
+        FileHandler.createDirectory(path: "Channels")
+        FileHandler.writeData(data: data, path: "Channels/\(Utils.bytesToHex(bytes: idBytes))")
+        print("persistNewChannel: successfully backup Channel to Channels/\(Utils.bytesToHex(bytes: idBytes))\n")
         return .Completed
     }
     
@@ -29,16 +23,10 @@ class MyPersister: Persist {
         print("Updating Persisted Channel")
         let idBytes: [UInt8] = channelId.write()
         let monitorBytes: [UInt8] = data.write()
-        do {
-            let data = Data(monitorBytes)
-            try FileHandler.createDirectory(path: "channels")
-            try FileHandler.writeData(data: data, path: "channels/\(Utils.bytesToHex(bytes: idBytes))")
-            print("updatePersistedChannel: update channel at channels/\(Utils.bytesToHex(bytes: idBytes))\n")
-        }
-        catch {
-            NSLog("updatePersistedChannel: problem updating channels/\(Utils.bytesToHex(bytes: idBytes))")
-            return .PermanentFailure
-        }
+        let data = Data(monitorBytes)
+        FileHandler.createDirectory(path: "Channels")
+        FileHandler.writeData(data: data, path: "Channels/\(Utils.bytesToHex(bytes: idBytes))")
+        print("updatePersistedChannel: update Channel at Channels/\(Utils.bytesToHex(bytes: idBytes))\n")
         return .Completed
     }
 }

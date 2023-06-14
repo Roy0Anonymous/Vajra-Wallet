@@ -18,10 +18,6 @@ class BlockchainData {
 //            url = URL(string: "https://mutinynet.com/api/tx")!
             url = URL(string: "https://blockstream.info/testnet/api/tx")!
         }
-//        guard let url = URL(string: "http://127.0.0.1:3002/tx") else {
-//            print("Invalid URL")
-//            return nil
-//        }
         do {
             let res = try DataGetPost.post(url: url, body: Utils.bytesToHex(bytes: tx))
             guard let res = res else {
@@ -38,10 +34,6 @@ class BlockchainData {
 
     static func getTx(txid: String, network: Network) -> Tx? {
         print("Getting Transaction")
-//        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)") else {
-//            debugPrint("Invalid URL")
-//            return nil
-//        }
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx/\(txid)")!
@@ -66,10 +58,6 @@ class BlockchainData {
 
     static func getTxHex(txid: String, network: Network) -> String? {
         print("Getting Transaction Hex")
-//        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/hex") else {
-//            print("Invalid URL")
-//            return nil
-//        }
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/hex")!
@@ -87,10 +75,6 @@ class BlockchainData {
 
     static func getBlockHeader(hash: String, network: Network) -> String? {
         print("Getting Block Header")
-//        guard let url = URL(string: "http://127.0.0.1:3002/block/\(hash)/header") else {
-//            print("Invalid URL")
-//            return nil
-//        }
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/block/\(hash)/header")!
@@ -108,10 +92,6 @@ class BlockchainData {
     
     static func getMerkleProof(txid: String, network: Network) -> MerkleProof? {
         print("Getting Merkle Proof")
-//        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/merkle-proof") else {
-//            print("Invalid URL")
-//            return nil
-//        }
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/merkle-proof")!
@@ -136,10 +116,6 @@ class BlockchainData {
 
     static func getTxStatus(txid: String, network: Network) -> TxStatus? {
         print("Getting Transaction Status")
-//        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/status") else {
-//            print("Invalid URL")
-//            return nil
-//        }
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/status")!
@@ -164,10 +140,6 @@ class BlockchainData {
     
     static func getTxRaw(txid: String, network: Network) -> Data? {
         print("Getting Transaction Raw")
-//        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/raw") else {
-//            print("Invalid URL")
-//            return nil
-//        }
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/raw")!
@@ -181,10 +153,6 @@ class BlockchainData {
     
     public static func outSpend(txid: String, index: UInt16, network: Network) -> OutSpent? {
         print("Getting OutSpend")
-//        guard let url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/outspend/\(index)") else {
-//            print("Invalid URL")
-//            return nil
-//        }
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/outspend/\(index)")!
@@ -209,10 +177,6 @@ class BlockchainData {
     
     static func getTipHeight(network: Network) -> Int32? {
         print("Getting Tip Height")
-//        guard let url = URL(string: "http://127.0.0.1:3002/blocks/tip/height") else {
-//            print("Invalid URL")
-//            return nil
-//        }
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/blocks/tip/height")!
@@ -232,10 +196,6 @@ class BlockchainData {
     
     static func getTipHash(network: Network) -> String? {
         print("Getting Tip Hash")
-//        guard let url = URL(string: "http://127.0.0.1:3002/blocks/tip/hash") else {
-//            print("Invalid URL")
-//            return nil
-//        }
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/blocks/tip/hash")!

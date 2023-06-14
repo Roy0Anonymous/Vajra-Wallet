@@ -10,5 +10,5 @@ import Foundation
 public struct MerkleProof: Codable {
     let block_height: Int32
     let merkle: [String]
-    let pos: Int
+    let pos: UInt
 }

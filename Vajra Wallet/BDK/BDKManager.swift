@@ -14,9 +14,9 @@ public class BDKManager: ObservableObject {
     @Published public var balance: Balance?
     @Published public var transactions: [TransactionDetails] = []
     @Published public var syncState = SyncState.notsynced
-    let mnemonic: Mnemonic
-    let descriptorSecretKey: DescriptorSecretKey
-    let descriptor: Descriptor
+    var mnemonic: Mnemonic
+    var descriptorSecretKey: DescriptorSecretKey
+    var descriptor: Descriptor
     
     private let bdkQueue = DispatchQueue (label: "bdkQueue", qos: .userInitiated)
     private let databaseConfig: DatabaseConfig
@@ -31,22 +31,62 @@ public class BDKManager: ObservableObject {
         let regtestURL = "http://127.0.0.1:3002"
         let esploraConfig = EsploraConfig(baseUrl: network == .regtest ? regtestURL : testnetURL, proxy: nil, concurrency: 5, stopGap: 20, timeout: nil)
         self.blockchainConfig = BlockchainConfig.esplora(config: esploraConfig)
-//        if net == .regtest {
-//            let esploraConfig = EsploraConfig(baseUrl: "http://127.0.0.1:3002", proxy: nil, concurrency: 5, stopGap: 20, timeout: nil)
-//            self.blockchainConfig = BlockchainConfig.esplora(config: esploraConfig)
-//        } else {
-//            let electrumConfig = ElectrumConfig(url: "ssl://mempool.space:60602", socks5: nil, retry: 5, timeout: nil, stopGap: 10, validateDomain: false)
-//            self.blockchainConfig = BlockchainConfig.electrum(config: electrumConfig)
-//        }
-        self.mnemonic = Mnemonic(wordCount: WordCount.words12)
-        self.descriptorSecretKey = DescriptorSecretKey(
-            network: net,
-            mnemonic: mnemonic,
-            password: nil)
-        self.descriptor = Descriptor.newBip84(
-            secretKey: descriptorSecretKey,
-            keychain: KeychainKind.external,
-            network: net)
+        
+        if FileHandler.fileExists(path: "Mnemonic") && FileHandler.fileExists(path: "Descriptor"){
+            print("Mnemonic & Descriptor Exists")
+            let mnemonicData = FileHandler.readData(path: "Mnemonic")
+            let descriptorData = FileHandler.readData(path: "Descriptor")
+            if let mnemonicStr = String(data: mnemonicData!, encoding: .utf8), let descriptorStr = String(data: descriptorData!, encoding: .utf8) {
+                do {
+                    self.mnemonic = try Mnemonic.fromString(mnemonic: mnemonicStr)
+                    self.descriptorSecretKey = DescriptorSecretKey(
+                        network: net,
+                        mnemonic: self.mnemonic,
+                        password: nil)
+                    self.descriptor = try Descriptor(descriptor: descriptorStr, network: net)
+                    self.loadWallet(descriptor: self.descriptor, changeDescriptor: nil)
+                    print("Mnemonic and Descriptor Loaded")
+                } catch {
+                    self.mnemonic = Mnemonic(wordCount: WordCount.words12)
+                    self.descriptorSecretKey = DescriptorSecretKey(
+                        network: net,
+                        mnemonic: self.mnemonic,
+                        password: nil)
+                    self.descriptor = Descriptor.newBip84(
+                        secretKey: descriptorSecretKey,
+                        keychain: KeychainKind.external,
+                        network: net)
+                    print("Failed to load Mnemonic and Descriptor, creating new one")
+                }
+            } else {
+                self.mnemonic = Mnemonic(wordCount: WordCount.words12)
+                self.descriptorSecretKey = DescriptorSecretKey(
+                    network: net,
+                    mnemonic: self.mnemonic,
+                    password: nil)
+                self.descriptor = Descriptor.newBip84(
+                    secretKey: descriptorSecretKey,
+                    keychain: KeychainKind.external,
+                    network: net)
+                print("Error parsing Mnemonic or Descriptor, creating new one")
+            }
+        } else {
+            self.mnemonic = Mnemonic(wordCount: WordCount.words12)
+            self.descriptorSecretKey = DescriptorSecretKey(
+                network: net,
+                mnemonic: self.mnemonic,
+                password: nil)
+            self.descriptor = Descriptor.newBip84(
+                secretKey: descriptorSecretKey,
+                keychain: KeychainKind.external,
+                network: net)
+            print("No Mnemonic and Descriptor found, creating new one")
+        }
+        let mnemonicData = Data(self.mnemonic.asString().utf8)
+        let descriptorData = Data(self.descriptor.asString().utf8)
+        FileHandler.writeData(data: mnemonicData, path: "Mnemonic")
+        FileHandler.writeData(data: descriptorData, path: "Descriptor")
+
         do {
             self.blockchain = try Blockchain(config: blockchainConfig)
         } catch {
@@ -140,15 +180,7 @@ public class BDKManager: ObservableObject {
     }
     
     func createWallet() {
-        do {
-            let keyData = KeyData(
-                mnemonic: mnemonic.asString(),
-                descriptor: descriptor.asStringPrivate())
-            try saveKeyData(keyData: keyData)
-            self.loadWallet(descriptor: descriptor, changeDescriptor: nil)
-        } catch let error {
-            debugPrint(error)
-        }
+        self.loadWallet(descriptor: descriptor, changeDescriptor: nil)
     }
     
     public func broadcast(txHex: [UInt8]) {

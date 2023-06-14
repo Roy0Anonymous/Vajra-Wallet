@@ -9,25 +9,14 @@ import SwiftUI
 
 struct ConnectToPeerView: View {
     @EnvironmentObject var ldkManager: LDKManager
-    @State private var nodeId: String = ""
-    @State private var host: String = ""
-    @State private var port: String = ""
+    @State private var peerPubkeyIp: String = ""
     @State private var connected: Bool = false
+    @State private var txId: String = ""
     var body: some View {
         VStack(spacing: 10) {
-            CustomTextField(track: $nodeId, name: "Node Id")
-            CustomTextField(track: $host, name: "Host")
-            CustomTextField(track: $port, name: "Port")
+            CustomTextField(track: $peerPubkeyIp, name: "PeerId@Address:Port")
             Button {
-                guard let port = NumberFormatter().number(from: port) else {
-                    print("Wrong Port")
-                    return
-                }
-                do {
-                    connected = try ldkManager.connect(nodeId: nodeId, address: host, port: port)
-                } catch {
-                    print(error)
-                }
+                connected = ldkManager.connect(peerPubkeyIp: peerPubkeyIp)
             } label: {
                 Text("Connect")
                     .frame(width: 150, height: 50, alignment: .center)
@@ -38,6 +27,7 @@ struct ConnectToPeerView: View {
             .alert(isPresented: $connected) {
                 Alert(title: Text("Connected to Peer"))
             }
+
         }
         .navigationTitle(Text("Connect to Peer"))
     }

@@ -12,8 +12,21 @@ import BitcoinDevKit
 class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
     var ldkManager: LDKManager? = nil
     func handleEvent(event: Event) {
-        if let _ = event.getValueAsSpendableOutputs() {
+        if let event = event.getValueAsSpendableOutputs() {
             print("handleEvent: trying to spend output")
+            let outputs = event.getOutputs()
+            let script = ldkManager!.keysManager!.asSignerProvider().getShutdownScriptpubkey().intoInner()
+//            var txOuts: [Bindings.TxOut] = []
+//            for output in outputs {
+//                txOuts.append(output.getValueAsStaticOutput()!.getOutput())
+//            }
+            let res = ldkManager?.keysManager?.spendSpendableOutputs(descriptors: outputs, outputs: [], changeDestinationScript: script, feerateSatPer1000Weight: 12500)
+            if res!.isOk() {
+                print("Claimed channel amount")
+                ldkManager?.broadcaster?.broadcastTransaction(tx: res!.getValue()!)
+            } else {
+                print("Failed to claim channel amount")
+            }
         }
         else if let paymentSentEvent = event.getValueAsPaymentSent() {
             print("handleEvent: Payment Sent \(paymentSentEvent)")
@@ -41,6 +54,7 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
         }
         // payment was claimed, so return preimage
         else if let paymentClaimedEvent = event.getValueAsPaymentClaimable() {
+            print("handleEvent: PaymentClaimed")
             let paymentPreimage = paymentClaimedEvent.getPurpose().getValueAsInvoicePayment()?.getPaymentPreimage()
             let _ = ldkManager?.channelManager?.claimFunds(paymentPreimage: paymentPreimage!)
             print("handleEvent: paymentClaimed preimage=\(paymentPreimage!)")
@@ -79,42 +93,26 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
 
     override func persistManager(channelManager: Bindings.ChannelManager) -> Bindings.Result_NoneErrorZ {
         print("Persisting Channel Manager")
-        let channel_manager_bytes = channelManager.write()
-        do {
-            let data = Data(channel_manager_bytes)
-            try FileHandler.writeData(data: data, path: "channel_manager")
-            print("persist_manager: saved")
-        }
-        catch {
-            NSLog("persist_manager: there was a problem persisting the channel \(error)")
-        }
+        let channelManagerBytes = channelManager.write()
+        let data = Data(channelManagerBytes)
+        FileHandler.writeData(data: data, path: "ChannelManager")
+        print("persist_manager: saved")
         return Result_NoneErrorZ.initWithOk()
     }
     
     override func persistGraph(networkGraph: NetworkGraph) -> Result_NoneErrorZ {
         print("Persisting Network Graph")
-        do {
-            let network_graph_bytes = networkGraph.write()
-            try FileHandler.writeData(data: Data(network_graph_bytes), path: "network_graph")
-            print("persist_network_graph: saved\n");
-        }
-        catch {
-            NSLog("persist_network_graph: error \(error)");
-        }
+        let networkGraphBytes = networkGraph.write()
+        FileHandler.writeData(data: Data(networkGraphBytes), path: "NetworkGraph")
+        print("persist_network_graph: saved\n");
         return Result_NoneErrorZ.initWithOk()
     }
     
     override func persistScorer(scorer: WriteableScore) -> Result_NoneErrorZ {
         print("Persisting Scorer")
-        do {
-            let scorerBytes = scorer.write()
-            try FileHandler.writeData(data: Data(scorerBytes), path: "probabilistic_scorer")
-            print("probabilistic_scorer: save success")
-        }
-        catch {
-            NSLog("persistScorer: Error \(error)");
-            
-        }
+        let scorerBytes = scorer.write()
+        FileHandler.writeData(data: Data(scorerBytes), path: "ProbabilisticScorer")
+        print("probabilistic_scorer: save success")
         return Result_NoneErrorZ.initWithOk()
     }
 }

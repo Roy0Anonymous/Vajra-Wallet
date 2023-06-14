@@ -39,12 +39,12 @@ struct WalletView: View {
         }
         .multilineTextAlignment(.center)
         .padding()
-//        .onAppear {
-//            if !hasAppeared {
-//                hasAppeared = true
-//                receiveAddress = ldkManager.bdkManager.getAddress(addressIndex: .new)
-//            }
-//            ldkManager.bdkManager.sync()
-//        }
+        .onAppear {
+            if !hasAppeared {
+                hasAppeared = true
+                receiveAddress = ldkManager.bdkManager.getAddress(addressIndex: .new)
+            }
+            ldkManager.bdkManager.sync()
+        }
     }
 }

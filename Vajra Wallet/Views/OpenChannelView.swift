@@ -9,13 +9,13 @@ import SwiftUI
 
 struct OpenChannelView: View {
     @EnvironmentObject var ldkManager: LDKManager
-    @State private var nodeId: String = ""
+    @State private var peerPubkeyIp: String = ""
     var body: some View {
         VStack {
-            CustomTextField(track: $nodeId, name: "Node Id")
+            CustomTextField(track: $peerPubkeyIp, name: "PeerId@Address:Port")
             Button {
                 let amount: UInt64 = 7000000
-                print(ldkManager.openChannel(nodeId: nodeId, amount: amount, pushMsat: 0) ? "Channel Opened" : "Failed to Open Channel")
+                print(ldkManager.openChannel(peerPubkeyIp: peerPubkeyIp, amount: amount, pushMsat: 0) ? "Channel Opened" : "Failed to Open Channel")
             } label: {
                 Text("Connect")
                     .frame(width: 150, height: 50, alignment: .center)
