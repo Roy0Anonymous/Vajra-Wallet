@@ -15,11 +15,16 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
         if let event = event.getValueAsSpendableOutputs() {
             print("handleEvent: trying to spend output")
             let outputs = event.getOutputs()
-            let script = ldkManager!.keysManager!.asSignerProvider().getShutdownScriptpubkey().intoInner()
-//            var txOuts: [Bindings.TxOut] = []
-//            for output in outputs {
-//                txOuts.append(output.getValueAsStaticOutput()!.getOutput())
+//            do {
+//                let addressInfo = try! ldkManager!.bdkManager.wallet!.getAddress(addressIndex: .new).address.scriptPubkey()
+//                
+//
+//
+//
+//            } catch {
+//                print(error)
 //            }
+            let script = ldkManager!.keysManager!.asSignerProvider().getDestinationScript()
             let res = ldkManager?.keysManager?.spendSpendableOutputs(descriptors: outputs, outputs: [], changeDestinationScript: script, feerateSatPer1000Weight: 12500)
             if res!.isOk() {
                 print("Claimed channel amount")

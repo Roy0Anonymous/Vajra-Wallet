@@ -11,7 +11,6 @@ struct ConnectToPeerView: View {
     @EnvironmentObject var ldkManager: LDKManager
     @State private var peerPubkeyIp: String = ""
     @State private var connected: Bool = false
-    @State private var txId: String = ""
     var body: some View {
         VStack(spacing: 10) {
             CustomTextField(track: $peerPubkeyIp, name: "PeerId@Address:Port")
@@ -27,7 +26,6 @@ struct ConnectToPeerView: View {
             .alert(isPresented: $connected) {
                 Alert(title: Text("Connected to Peer"))
             }
-
         }
         .navigationTitle(Text("Connect to Peer"))
     }

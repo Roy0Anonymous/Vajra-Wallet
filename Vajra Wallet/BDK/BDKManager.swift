@@ -32,33 +32,20 @@ public class BDKManager: ObservableObject {
         let esploraConfig = EsploraConfig(baseUrl: network == .regtest ? regtestURL : testnetURL, proxy: nil, concurrency: 5, stopGap: 20, timeout: nil)
         self.blockchainConfig = BlockchainConfig.esplora(config: esploraConfig)
         
-        if FileHandler.fileExists(path: "Mnemonic") && FileHandler.fileExists(path: "Descriptor"){
-            print("Mnemonic & Descriptor Exists")
+        if FileHandler.fileExists(path: "Mnemonic") {
+            print("Mnemonic Exists")
             let mnemonicData = FileHandler.readData(path: "Mnemonic")
-            let descriptorData = FileHandler.readData(path: "Descriptor")
-            if let mnemonicStr = String(data: mnemonicData!, encoding: .utf8), let descriptorStr = String(data: descriptorData!, encoding: .utf8) {
-                do {
-                    self.mnemonic = try Mnemonic.fromString(mnemonic: mnemonicStr)
-                    self.descriptorSecretKey = DescriptorSecretKey(
-                        network: net,
-                        mnemonic: self.mnemonic,
-                        password: nil)
-                    self.descriptor = try Descriptor(descriptor: descriptorStr, network: net)
-                    self.loadWallet(descriptor: self.descriptor, changeDescriptor: nil)
-                    print("Mnemonic and Descriptor Loaded")
-                } catch {
-                    self.mnemonic = Mnemonic(wordCount: WordCount.words12)
-                    self.descriptorSecretKey = DescriptorSecretKey(
-                        network: net,
-                        mnemonic: self.mnemonic,
-                        password: nil)
-                    self.descriptor = Descriptor.newBip84(
-                        secretKey: descriptorSecretKey,
-                        keychain: KeychainKind.external,
-                        network: net)
-                    print("Failed to load Mnemonic and Descriptor, creating new one")
-                }
-            } else {
+            let mnemonicStr = String(data: mnemonicData!, encoding: .utf8)!
+            do {
+                self.mnemonic = try Mnemonic.fromString(mnemonic: mnemonicStr)
+                self.descriptorSecretKey = DescriptorSecretKey(
+                    network: net,
+                    mnemonic: self.mnemonic,
+                    password: nil)
+                self.descriptor = Descriptor.newBip84(secretKey: descriptorSecretKey, keychain: .external, network: net)
+                createWallet()
+                print("Wallet Loaded")
+            } catch {
                 self.mnemonic = Mnemonic(wordCount: WordCount.words12)
                 self.descriptorSecretKey = DescriptorSecretKey(
                     network: net,
@@ -66,9 +53,9 @@ public class BDKManager: ObservableObject {
                     password: nil)
                 self.descriptor = Descriptor.newBip84(
                     secretKey: descriptorSecretKey,
-                    keychain: KeychainKind.external,
+                    keychain: .external,
                     network: net)
-                print("Error parsing Mnemonic or Descriptor, creating new one")
+                print("Failed to parse Mnemonic, creating a new Wallet")
             }
         } else {
             self.mnemonic = Mnemonic(wordCount: WordCount.words12)
@@ -78,14 +65,12 @@ public class BDKManager: ObservableObject {
                 password: nil)
             self.descriptor = Descriptor.newBip84(
                 secretKey: descriptorSecretKey,
-                keychain: KeychainKind.external,
+                keychain: .external,
                 network: net)
-            print("No Mnemonic and Descriptor found, creating new one")
+            print("No Mnemonic found, creating a new Wallet")
         }
         let mnemonicData = Data(self.mnemonic.asString().utf8)
-        let descriptorData = Data(self.descriptor.asString().utf8)
         FileHandler.writeData(data: mnemonicData, path: "Mnemonic")
-        FileHandler.writeData(data: descriptorData, path: "Descriptor")
 
         do {
             self.blockchain = try Blockchain(config: blockchainConfig)
