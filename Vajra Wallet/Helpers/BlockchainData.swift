@@ -175,7 +175,7 @@ class BlockchainData {
         }
     }
     
-    static func getTipHeight(network: Network) -> Int32? {
+    static func getTipHeight(network: Network) -> UInt32? {
         print("Getting Tip Height")
         var url: URL
         if network == .Regtest {
@@ -190,7 +190,7 @@ class BlockchainData {
             return nil
         }
         let text = String(decoding: data, as: UTF8.self)
-        let res = Int32(text)
+        let res = UInt32(text)
         return res
     }
     

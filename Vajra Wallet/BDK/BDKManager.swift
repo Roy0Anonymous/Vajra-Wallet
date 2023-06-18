@@ -14,11 +14,11 @@ public class BDKManager: ObservableObject {
     @Published public var balance: Balance?
     @Published public var transactions: [TransactionDetails] = []
     @Published public var syncState = SyncState.notsynced
-    var mnemonic: Mnemonic
-    var descriptorSecretKey: DescriptorSecretKey
-    var descriptor: Descriptor
+    var mnemonic: Mnemonic?
+    var descriptorSecretKey: DescriptorSecretKey?
+    var descriptor: Descriptor?
     
-    private let bdkQueue = DispatchQueue (label: "bdkQueue", qos: .userInitiated)
+    private let bdkQueue = DispatchQueue(label: "bdkQueue", qos: .userInitiated)
     private let databaseConfig: DatabaseConfig
     private let blockchainConfig: BlockchainConfig
     private var blockchain: Blockchain?
@@ -40,38 +40,15 @@ public class BDKManager: ObservableObject {
                 self.mnemonic = try Mnemonic.fromString(mnemonic: mnemonicStr)
                 self.descriptorSecretKey = DescriptorSecretKey(
                     network: net,
-                    mnemonic: self.mnemonic,
+                    mnemonic: self.mnemonic!,
                     password: nil)
-                self.descriptor = Descriptor.newBip84(secretKey: descriptorSecretKey, keychain: .external, network: net)
-                createWallet()
+                self.descriptor = Descriptor.newBip84(secretKey: descriptorSecretKey!, keychain: .external, network: net)
+                loadWallet(descriptor: descriptor!, changeDescriptor: nil)
                 print("Wallet Loaded")
             } catch {
-                self.mnemonic = Mnemonic(wordCount: WordCount.words12)
-                self.descriptorSecretKey = DescriptorSecretKey(
-                    network: net,
-                    mnemonic: self.mnemonic,
-                    password: nil)
-                self.descriptor = Descriptor.newBip84(
-                    secretKey: descriptorSecretKey,
-                    keychain: .external,
-                    network: net)
-                print("Failed to parse Mnemonic, creating a new Wallet")
+                print("Error Loading Wallet")
             }
-        } else {
-            self.mnemonic = Mnemonic(wordCount: WordCount.words12)
-            self.descriptorSecretKey = DescriptorSecretKey(
-                network: net,
-                mnemonic: self.mnemonic,
-                password: nil)
-            self.descriptor = Descriptor.newBip84(
-                secretKey: descriptorSecretKey,
-                keychain: .external,
-                network: net)
-            print("No Mnemonic found, creating a new Wallet")
         }
-        let mnemonicData = Data(self.mnemonic.asString().utf8)
-        FileHandler.writeData(data: mnemonicData, path: "Mnemonic")
-
         do {
             self.blockchain = try Blockchain(config: blockchainConfig)
         } catch {
@@ -165,7 +142,20 @@ public class BDKManager: ObservableObject {
     }
     
     func createWallet() {
-        self.loadWallet(descriptor: descriptor, changeDescriptor: nil)
+        print("Creating Wallet")
+        self.mnemonic = Mnemonic(wordCount: WordCount.words12)
+        self.descriptorSecretKey = DescriptorSecretKey(
+            network: network,
+            mnemonic: self.mnemonic!,
+            password: nil)
+        self.descriptor = Descriptor.newBip84(
+            secretKey: descriptorSecretKey!,
+            keychain: .external,
+            network: network)
+        let mnemonicData = Data(self.mnemonic!.asString().utf8)
+        FileHandler.writeData(data: mnemonicData, path: "Mnemonic")
+        self.loadWallet(descriptor: descriptor!, changeDescriptor: nil)
+        print("Wallet Created")
     }
     
     public func broadcast(txHex: [UInt8]) {
@@ -178,7 +168,7 @@ public class BDKManager: ObservableObject {
     }
     
     func getPrivKey() -> [UInt8]{
-        return descriptorSecretKey.secretBytes()
+        return descriptorSecretKey!.secretBytes()
     }
     
     public func getBlockHeight() -> UInt32? {
@@ -204,7 +194,26 @@ public class BDKManager: ObservableObject {
     }
     
     public func getRecoveryPhrase() -> String? {
-        return mnemonic.asString()
+        return mnemonic!.asString()
+    }
+    
+    public func recoverWallet(mnemonicStr: String) -> Bool {
+        do {
+            self.mnemonic = try Mnemonic.fromString(mnemonic: mnemonicStr)
+            self.descriptorSecretKey = DescriptorSecretKey(
+                network: network,
+                mnemonic: self.mnemonic!,
+                password: nil)
+            self.descriptor = Descriptor.newBip84(secretKey: descriptorSecretKey!, keychain: .external, network: network)
+            let mnemonicData = Data(self.mnemonic!.asString().utf8)
+            FileHandler.writeData(data: mnemonicData, path: "Mnemonic")
+            loadWallet(descriptor: descriptor!, changeDescriptor: nil)
+            print("Wallet Loaded")
+            return true
+        } catch {
+            print(error.localizedDescription)
+            return false
+        }
     }
 }
 

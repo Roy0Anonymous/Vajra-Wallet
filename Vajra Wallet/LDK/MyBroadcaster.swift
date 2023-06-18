@@ -14,7 +14,7 @@ class MyBroacaster: BroadcasterInterface {
         if ldkManager!.network == .Regtest {
             txId = BlockchainData.broadcastTx(tx: tx, network: .Regtest)
         } else {
-            txId = BlockchainData.broadcastTx(tx: tx, network: .Signet)
+            txId = BlockchainData.broadcastTx(tx: tx, network: .Testnet)
         }
         print("Broadcast Transaction TxId: \(String(describing: txId))")
     }

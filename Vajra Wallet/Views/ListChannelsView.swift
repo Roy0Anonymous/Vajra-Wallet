@@ -11,13 +11,15 @@ import LightningDevKit
 struct ListChannelsView: View {
     @EnvironmentObject var ldkManager: LDKManager
     var body: some View {
-        VStack {
-            let channels = ldkManager.channelManager?.listChannels()
-            ForEach(channels!, id: \.self) { channel in
-                ChannelView(channel: channel)
-                Divider()
+        ScrollView {
+            VStack {
+                let channels = ldkManager.channelManager?.listChannels()
+                ForEach(channels!, id: \.self) { channel in
+                    ChannelView(channel: channel)
+                    Divider()
+                }
+                Spacer()
             }
-            Spacer()
         }
         .navigationTitle(Text("Channels"))
     }

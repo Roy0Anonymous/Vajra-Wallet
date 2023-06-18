@@ -14,7 +14,6 @@
 		C6D8C5842A215B2A0057D42E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D8C5832A215B2A0057D42E /* Assets.xcassets */; };
 		C6D8C5872A215B2A0057D42E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D8C5862A215B2A0057D42E /* Preview Assets.xcassets */; };
 		C6D8C58F2A215CE60057D42E /* LightningDevKit in Frameworks */ = {isa = PBXBuildFile; productRef = C6D8C58E2A215CE60057D42E /* LightningDevKit */; };
-		C6D8C5922A215D0D0057D42E /* BitcoinDevKit in Frameworks */ = {isa = PBXBuildFile; productRef = C6D8C5912A215D0D0057D42E /* BitcoinDevKit */; };
 		C6D8C5942A215D290057D42E /* MyFeeEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5932A215D290057D42E /* MyFeeEstimator.swift */; };
 		C6D8C5962A215D430057D42E /* MyLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5952A215D430057D42E /* MyLogger.swift */; };
 		C6D8C5982A215D540057D42E /* MyBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5972A215D540057D42E /* MyBroadcaster.swift */; };
@@ -37,8 +36,11 @@
 		C6D8C5C52A2256E20057D42E /* ListChannelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5C42A2256E20057D42E /* ListChannelsView.swift */; };
 		C6D8C5C92A2257680057D42E /* CreateWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5C82A2257680057D42E /* CreateWalletView.swift */; };
 		C6D8C5E72A22AF2F0057D42E /* RecoveryPhraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5E62A22AF2F0057D42E /* RecoveryPhraseView.swift */; };
+		C6E0FA532A3EF9E6003D31A5 /* NodeIdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E0FA522A3EF9E6003D31A5 /* NodeIdView.swift */; };
 		C6EA67512A25038A00A6867D /* SendPaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EA67502A25038A00A6867D /* SendPaymentView.swift */; };
 		C6EA67552A256E5800A6867D /* GenerateInvoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EA67542A256E5800A6867D /* GenerateInvoiceView.swift */; };
+		C6F2E51F2A3C87CC0003B516 /* RecoverWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F2E51E2A3C87CC0003B516 /* RecoverWalletView.swift */; };
+		C6F2E5412A3CB7740003B516 /* BitcoinDevKit in Frameworks */ = {isa = PBXBuildFile; productRef = C6F2E5402A3CB7740003B516 /* BitcoinDevKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,8 +73,10 @@
 		C6D8C5C42A2256E20057D42E /* ListChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListChannelsView.swift; sourceTree = "<group>"; };
 		C6D8C5C82A2257680057D42E /* CreateWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletView.swift; sourceTree = "<group>"; };
 		C6D8C5E62A22AF2F0057D42E /* RecoveryPhraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseView.swift; sourceTree = "<group>"; };
+		C6E0FA522A3EF9E6003D31A5 /* NodeIdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeIdView.swift; sourceTree = "<group>"; };
 		C6EA67502A25038A00A6867D /* SendPaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentView.swift; sourceTree = "<group>"; };
 		C6EA67542A256E5800A6867D /* GenerateInvoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateInvoiceView.swift; sourceTree = "<group>"; };
+		C6F2E51E2A3C87CC0003B516 /* RecoverWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverWalletView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6D8C5922A215D0D0057D42E /* BitcoinDevKit in Frameworks */,
+				C6F2E5412A3CB7740003B516 /* BitcoinDevKit in Frameworks */,
 				C6D8C58F2A215CE60057D42E /* LightningDevKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -168,6 +172,7 @@
 				C6D8C5C82A2257680057D42E /* CreateWalletView.swift */,
 				C6D8C5812A215B290057D42E /* WalletView.swift */,
 				C6D8C5BC2A2256B40057D42E /* SettingsView.swift */,
+				C6E0FA522A3EF9E6003D31A5 /* NodeIdView.swift */,
 				C6D8C5BE2A2256CE0057D42E /* ListPeersView.swift */,
 				C6D8C5C02A2256D60057D42E /* ConnectToPeerView.swift */,
 				C6D8C5C22A2256DC0057D42E /* OpenChannelView.swift */,
@@ -176,6 +181,7 @@
 				C6EA67542A256E5800A6867D /* GenerateInvoiceView.swift */,
 				C6972C482A26B3CF00BBA785 /* CloseChannelView.swift */,
 				C6D8C5E62A22AF2F0057D42E /* RecoveryPhraseView.swift */,
+				C6F2E51E2A3C87CC0003B516 /* RecoverWalletView.swift */,
 				C65690B92A27FB5D002B013B /* SendPaymentOnChainView.swift */,
 			);
 			path = Views;
@@ -207,7 +213,7 @@
 			name = "Vajra Wallet";
 			packageProductDependencies = (
 				C6D8C58E2A215CE60057D42E /* LightningDevKit */,
-				C6D8C5912A215D0D0057D42E /* BitcoinDevKit */,
+				C6F2E5402A3CB7740003B516 /* BitcoinDevKit */,
 			);
 			productName = "Vajra Wallet";
 			productReference = C6D8C57C2A215B290057D42E /* Vajra Wallet.app */;
@@ -239,7 +245,7 @@
 			mainGroup = C6D8C5732A215B290057D42E;
 			packageReferences = (
 				C6D8C58D2A215CE60057D42E /* XCRemoteSwiftPackageReference "ldk-swift" */,
-				C6D8C5902A215D0D0057D42E /* XCRemoteSwiftPackageReference "bdk-swift" */,
+				C6F2E53F2A3CB7740003B516 /* XCRemoteSwiftPackageReference "bdk-swift" */,
 			);
 			productRefGroup = C6D8C57D2A215B290057D42E /* Products */;
 			projectDirPath = "";
@@ -272,6 +278,8 @@
 				C6D8C5C92A2257680057D42E /* CreateWalletView.swift in Sources */,
 				C6D8C5AC2A2196CB0057D42E /* FileHandler.swift in Sources */,
 				C6D8C5AE2A2197D90057D42E /* MyFilter.swift in Sources */,
+				C6E0FA532A3EF9E6003D31A5 /* NodeIdView.swift in Sources */,
+				C6F2E51F2A3C87CC0003B516 /* RecoverWalletView.swift in Sources */,
 				C6D8C5A22A21933E0057D42E /* Utils.swift in Sources */,
 				C6D8C59E2A2192CF0057D42E /* BlockchainData.swift in Sources */,
 				C6EA67512A25038A00A6867D /* SendPaymentView.swift in Sources */,
@@ -505,12 +513,12 @@
 				version = 0.0.115;
 			};
 		};
-		C6D8C5902A215D0D0057D42E /* XCRemoteSwiftPackageReference "bdk-swift" */ = {
+		C6F2E53F2A3CB7740003B516 /* XCRemoteSwiftPackageReference "bdk-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/bitcoindevkit/bdk-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 0.28.0;
+				version = 0.29.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -521,9 +529,9 @@
 			package = C6D8C58D2A215CE60057D42E /* XCRemoteSwiftPackageReference "ldk-swift" */;
 			productName = LightningDevKit;
 		};
-		C6D8C5912A215D0D0057D42E /* BitcoinDevKit */ = {
+		C6F2E5402A3CB7740003B516 /* BitcoinDevKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C6D8C5902A215D0D0057D42E /* XCRemoteSwiftPackageReference "bdk-swift" */;
+			package = C6F2E53F2A3CB7740003B516 /* XCRemoteSwiftPackageReference "bdk-swift" */;
 			productName = BitcoinDevKit;
 		};
 /* End XCSwiftPackageProductDependency section */

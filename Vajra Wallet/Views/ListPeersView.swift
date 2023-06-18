@@ -10,14 +10,16 @@ import SwiftUI
 struct ListPeersView: View {
     @EnvironmentObject var ldkManager: LDKManager
     var body: some View {
-        ZStack {
-            Color(uiColor: .systemBackground).ignoresSafeArea()
+        ScrollView {
+            ZStack {
+                Color(uiColor: .systemBackground).ignoresSafeArea()
                 let connectedPeers = ldkManager.listPeers()
-            VStack(spacing: 10) {
-                ForEach(connectedPeers, id: \.self) { peer in
-                    PeersText(text: peer)
+                VStack(spacing: 10) {
+                    ForEach(connectedPeers, id: \.self) { peer in
+                        CustomText(text: peer)
+                    }
+                    Spacer()
                 }
-                Spacer()
             }
         }
         .navigationTitle(Text("Peers"))
@@ -30,7 +32,7 @@ struct ListPeersView_Previews: PreviewProvider {
     }
 }
 
-struct PeersText: View {
+struct CustomText: View {
     var text: String
     var body: some View {
         Text(text)

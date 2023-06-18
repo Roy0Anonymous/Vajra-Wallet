@@ -15,22 +15,18 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
         if let event = event.getValueAsSpendableOutputs() {
             print("handleEvent: trying to spend output")
             let outputs = event.getOutputs()
-//            do {
-//                let addressInfo = try! ldkManager!.bdkManager.wallet!.getAddress(addressIndex: .new).address.scriptPubkey()
-//                
-//
-//
-//
-//            } catch {
-//                print(error)
-//            }
-            let script = ldkManager!.keysManager!.asSignerProvider().getDestinationScript()
-            let res = ldkManager?.keysManager?.spendSpendableOutputs(descriptors: outputs, outputs: [], changeDestinationScript: script, feerateSatPer1000Weight: 12500)
-            if res!.isOk() {
-                print("Claimed channel amount")
-                ldkManager?.broadcaster?.broadcastTransaction(tx: res!.getValue()!)
-            } else {
-                print("Failed to claim channel amount")
+            do {
+                let address = ldkManager!.bdkManager.getAddress(addressIndex: .new)!
+                let script = try Address(address: address).scriptPubkey().toBytes()
+                let res = ldkManager?.keysManager?.spendSpendableOutputs(descriptors: outputs, outputs: [], changeDestinationScript: script, feerateSatPer1000Weight: 1000)
+                if res!.isOk() {
+                    print("Claimed channel amount")
+                    ldkManager?.broadcaster?.broadcastTransaction(tx: res!.getValue()!)
+                } else {
+                    print("Failed to claim channel amount")
+                }
+            } catch {
+                print(error)
             }
         }
         else if let paymentSentEvent = event.getValueAsPaymentSent() {
@@ -81,9 +77,6 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
                 return
             }
             print(result.isOk() ? "Transferred Succesfully" : "Transfer Failed")
-        }
-        else if event.getValueAsPaymentForwarded() != nil {
-            // we don't route as we are a light mobile node
         }
         else if let _ = event.getValueAsChannelClosed() {
             print("handleEvent: ChannelClosed")

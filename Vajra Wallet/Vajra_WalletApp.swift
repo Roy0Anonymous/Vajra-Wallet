@@ -9,14 +9,16 @@ import SwiftUI
 
 @main
 struct Vajra_WalletApp: App {
-    @ObservedObject var ldkManager: LDKManager = LDKManager(net: .Regtest)
+    @ObservedObject var ldkManager: LDKManager = LDKManager(net: .Testnet)
+    @State var hasLoaded: Bool = false
+    let mnemonicIsPresent = FileHandler.fileExists(path: "Mnemonic")
     var body: some Scene {
         WindowGroup {
-            if ldkManager.bdkManager.wallet == nil {
-                CreateWalletView()
+            if mnemonicIsPresent {
+                TabBarView()
                     .environmentObject(ldkManager)
             } else {
-                TabBarView()
+                CreateWalletView()
                     .environmentObject(ldkManager)
             }
         }

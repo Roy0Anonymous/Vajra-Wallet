@@ -14,7 +14,7 @@ struct OpenChannelView: View {
         VStack {
             CustomTextField(track: $peerPubkeyIp, name: "PeerId@Address:Port")
             Button {
-                let amount: UInt64 = 7000000
+                let amount: UInt64 = 100000
                 print(ldkManager.openChannel(peerPubkeyIp: peerPubkeyIp, amount: amount, pushMsat: 0) ? "Channel Opened" : "Failed to Open Channel")
             } label: {
                 Text("Connect")
