@@ -10,25 +10,27 @@ import SwiftUI
 struct ListPeersView: View {
     @EnvironmentObject var ldkManager: LDKManager
     var body: some View {
-        ScrollView {
-            ZStack {
-                Color(uiColor: .systemBackground).ignoresSafeArea()
-                let connectedPeers = ldkManager.listPeers()
-                VStack(spacing: 10) {
-                    ForEach(connectedPeers, id: \.self) { peer in
-                        CustomText(text: peer)
-                    }
-                    Spacer()
+        let connectedPeers = ldkManager.listPeers()
+        if connectedPeers.isEmpty {
+            VStack() {
+                Image(systemName: "list.bullet.rectangle.portrait")
+                    .resizable()
+                    .frame(width: 125, height: 150)
+                    .scaledToFill()
+                    .padding(.bottom, 30)
+                    .foregroundColor(.red)
+                Text("No Peers Available")
+                    .font(.title)
+            }
+            .navigationTitle(Text("Peers"))
+        } else {
+            ScrollView {
+                ForEach(connectedPeers, id: \.self) { peer in
+                    CustomText(text: peer)
                 }
             }
+            .navigationTitle(Text("Peers"))
         }
-        .navigationTitle(Text("Peers"))
-    }
-}
-
-struct ListPeersView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListPeersView()
     }
 }
 

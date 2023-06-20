@@ -35,11 +35,6 @@ struct GenerateInvoiceView: View {
                 UIPasteboard.general.string = invoice
             }), secondaryButton: .cancel(Text("Cancel")))
         }
-    }
-}
-
-struct ReceivePaymentView_Previews: PreviewProvider {
-    static var previews: some View {
-        GenerateInvoiceView()
+        .navigationTitle(Text("Generate Invoice"))
     }
 }

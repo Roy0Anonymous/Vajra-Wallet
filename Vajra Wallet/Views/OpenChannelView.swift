@@ -17,19 +17,13 @@ struct OpenChannelView: View {
                 let amount: UInt64 = 100000
                 print(ldkManager.openChannel(peerPubkeyIp: peerPubkeyIp, amount: amount, pushMsat: 0) ? "Channel Opened" : "Failed to Open Channel")
             } label: {
-                Text("Connect")
+                Text("Open Channel")
                     .frame(width: 150, height: 50, alignment: .center)
                     .background(Color.blue)
                     .cornerRadius(10)
                     .foregroundColor(.white)
             }
-
         }
-    }
-}
-
-struct OpenChannelView_Previews: PreviewProvider {
-    static var previews: some View {
-        OpenChannelView()
+        .navigationTitle(Text("Open a Channel"))
     }
 }

@@ -15,9 +15,3 @@ struct RecoveryPhraseView: View {
             .navigationTitle(Text("Recovery Phrase"))
     }
 }
-
-struct RecoveryPhraseView_Previews: PreviewProvider {
-    static var previews: some View {
-        RecoveryPhraseView()
-    }
-}

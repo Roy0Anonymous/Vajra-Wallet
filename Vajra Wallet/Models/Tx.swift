@@ -7,16 +7,6 @@
 
 import Foundation
 
-public class WatchedTransaction {
-    public let id: [UInt8]
-    public let scriptPubKey: [UInt8]
-    
-    init(id: [UInt8], scriptPubKey: [UInt8]) {
-        self.id = id
-        self.scriptPubKey = scriptPubKey
-    }
-}
-
 public struct Tx: Codable {
     let txid: String
     let status: TxStatus

@@ -30,9 +30,3 @@ struct RecoverWalletView: View {
         }
     }
 }
-
-struct RecoverWalletView_Previews: PreviewProvider {
-    static var previews: some View {
-        RecoverWalletView()
-    }
-}

@@ -20,13 +20,8 @@ struct NodeIdView: View {
             }
             .frame(width: 150, height: 50, alignment: .center)
             .background(.blue)
-            .cornerRadius(15)
+            .cornerRadius(10)
         }
-    }
-}
-
-struct NodeIdView_Previews: PreviewProvider {
-    static var previews: some View {
-        NodeIdView()
+        .navigationTitle(Text("Node Id"))
     }
 }

@@ -11,23 +11,28 @@ import LightningDevKit
 struct ListChannelsView: View {
     @EnvironmentObject var ldkManager: LDKManager
     var body: some View {
-        ScrollView {
-            VStack {
-                let channels = ldkManager.channelManager?.listChannels()
+        let channels = ldkManager.channelManager?.listChannels()
+        if channels!.isEmpty {
+            VStack() {
+                Image(systemName: "list.bullet.rectangle.portrait")
+                    .resizable()
+                    .frame(width: 125, height: 150)
+                    .scaledToFill()
+                    .padding(.bottom, 30)
+                    .foregroundColor(.red)
+                Text("No Channels Available")
+                    .font(.title)
+            }
+            .navigationTitle(Text("Channels"))
+        } else {
+            ScrollView {
                 ForEach(channels!, id: \.self) { channel in
                     ChannelView(channel: channel)
                     Divider()
                 }
-                Spacer()
             }
+            .navigationTitle(Text("Channels"))
         }
-        .navigationTitle(Text("Channels"))
-    }
-}
-
-struct ListChannelsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListChannelsView()
     }
 }
 

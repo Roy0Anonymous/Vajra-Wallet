@@ -31,12 +31,6 @@ struct ConnectToPeerView: View {
     }
 }
 
-struct ConnectToPeerView_Previews: PreviewProvider {
-    static var previews: some View {
-        ConnectToPeerView()
-    }
-}
-
 struct CustomTextField: View {
     @Binding var track: String
     let name: String

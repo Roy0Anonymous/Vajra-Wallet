@@ -11,7 +11,7 @@ struct WalletView: View {
     @EnvironmentObject var ldkManager: LDKManager
     @State private var receiveAddress: String?
     @State private var hasAppeared = false
-    @State private var ldkRunning = true
+    @State private var ldkFailed = false
     @Binding var title: String
     var body: some View {
         NavigationStack {
@@ -29,27 +29,36 @@ struct WalletView: View {
                 case .failed:
                     Text("Sync failed")
                 }
-                Button("Sync") {
-                    DispatchQueue.global().async {
-                        receiveAddress = ldkManager.bdkManager.getAddress(addressIndex: .new)
-                    }
-                    do {
-                        try ldkManager.sync(completion: { result in
-                            switch result {
-                            case .success():
-                                ldkRunning = true
-                            case .failure(_):
-                                ldkRunning = false
-                            }
-                        })
-                    } catch {
-                        print(error)
-                        ldkRunning = false
-                    }
-                }
                 Text(receiveAddress ?? "No Address Found")
-                if !ldkRunning {
-                    Text("Failed to Start Node")
+                HStack {
+                    Button {
+                        LDKManager.ldkQueue.async {
+                            receiveAddress = ldkManager.bdkManager.getAddress(addressIndex: .new)
+                        }
+                        LDKManager.ldkQueue.async {
+                            do {
+                                try ldkManager.sync()
+                            } catch {
+                                ldkFailed = true
+                            }
+                        }
+                    } label: {
+                        Text("Sync")
+                            .frame(width: 150, height: 50, alignment: .center)
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                            .foregroundColor(.white)
+                    }
+                    
+                    Button {
+                        UIPasteboard.general.string = receiveAddress
+                    } label: {
+                        Text("Copy to Clipboard")
+                            .foregroundColor(.white)
+                    }
+                    .frame(width: 150, height: 50, alignment: .center)
+                    .background(.blue)
+                    .cornerRadius(10)
                 }
                 Spacer()
             }
@@ -59,30 +68,22 @@ struct WalletView: View {
             .onAppear() {
                 title = "Wallet"
                 if !hasAppeared {
-                    DispatchQueue.main.async {
-                        hasAppeared = true
-                        ldkManager.bdkManager.sync()
-                        do {
-                            try ldkManager.start(completion: { result in
-                                switch result {
-                                case .success():
-                                    print("Success")
-                                    ldkRunning = true
-                                case .failure(_):
-                                    ldkRunning = false
-                                }
-                            })
-                        } catch {
-                            print(error)
-                            ldkRunning = false
-                        }
-                    }
-                    DispatchQueue.global().async {
+                    hasAppeared = true
+                    LDKManager.ldkQueue.async {
                         receiveAddress = ldkManager.bdkManager.getAddress(addressIndex: .new)
+                    }
+                    LDKManager.ldkQueue.async {
+                        do {
+                            try ldkManager.start()
+                        } catch {
+                            ldkFailed = true
+                        }
                     }
                 }
             }
-            .navigationTitle(Text("Wallet"))
+            .fullScreenCover(isPresented: $ldkFailed) {
+                NodeErrorView()
+            }
         }
     }
 }

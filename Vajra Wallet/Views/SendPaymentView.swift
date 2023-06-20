@@ -25,11 +25,6 @@ struct SendPaymentView: View {
         .alert(isPresented: $sent) {
             Alert(title: Text("Invoice paid Successfully"))
         }
-    }
-}
-
-struct SendPaymentView_Previews: PreviewProvider {
-    static var previews: some View {
-        SendPaymentView()
+        .navigationTitle(Text("Send Payment"))
     }
 }

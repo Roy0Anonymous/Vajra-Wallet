@@ -50,7 +50,7 @@ class FileHandler {
 
     static func contentsOfDirectory(atPath: String? = nil, regex: String? = nil) throws -> [URL] {
 
-        let url:URL
+        let url: URL
         if let path = atPath {
             url = getDocumentsDirectory().appendingPathComponent(path)
         }
@@ -58,15 +58,12 @@ class FileHandler {
             url = getDocumentsDirectory()
         }
 
-        let content:[URL]
+        let content: [URL]
         if let regex = regex {
-            let urlRegex = try NSRegularExpression(pattern:regex, options: .caseInsensitive)
-            content = try fileManager.contentsOfDirectory(
-                at: url,
-                includingPropertiesForKeys: nil
-            ).filter { (url) in
+            let urlRegex = try NSRegularExpression(pattern: regex, options: .caseInsensitive)
+            content = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil).filter { url in
                 let range = NSRange(location: 0, length: url.absoluteString.count)
-                if urlRegex.firstMatch(in: url.absoluteString, range: range) != nil    {
+                if urlRegex.firstMatch(in: url.absoluteString, range: range) != nil {
                     return true
                 } else {
                     return false
@@ -74,16 +71,12 @@ class FileHandler {
             }
         }
         else {
-            content = try fileManager.contentsOfDirectory(
-                    at: url,
-                    includingPropertiesForKeys: nil
-                )
+            content = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
         }
-
         return content
     }
 
-    static func readData(url:URL) throws -> Data {
+    static func readData(url: URL) throws -> Data {
         return try Data(contentsOf: url)
     }
 }

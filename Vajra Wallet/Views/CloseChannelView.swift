@@ -27,11 +27,6 @@ struct CloseChannelView: View {
         .alert(isPresented: $closed) {
             Alert(title: Text("Channel Closed Successfully"))
         }
-    }
-}
-
-struct CloseChannelView_Previews: PreviewProvider {
-    static var previews: some View {
-        CloseChannelView()
+        .navigationTitle(Text("Close Channel"))
     }
 }

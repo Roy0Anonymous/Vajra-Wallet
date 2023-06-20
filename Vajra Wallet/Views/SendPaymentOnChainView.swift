@@ -38,11 +38,6 @@ struct SendPaymentOnChainView: View {
         .alert(isPresented: $success) {
             Alert(title: Text("Payment Sent"))
         }
-    }
-}
-
-struct SendPaymentOnChainView_Previews: PreviewProvider {
-    static var previews: some View {
-        SendPaymentOnChainView()
+        .navigationTitle(Text("Send Payment On-Chain"))
     }
 }

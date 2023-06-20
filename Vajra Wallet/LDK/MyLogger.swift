@@ -7,9 +7,9 @@
 
 import LightningDevKit
 
-class MyLogger: Logger {
+class MyLogger: Bindings.Logger {
     override func log(record: Bindings.Record) {
         let rawLog = record.getArgs()
-        debugPrint(rawLog)
+        LDKManager.activityLogger.debug("\(rawLog)")
     }
 }

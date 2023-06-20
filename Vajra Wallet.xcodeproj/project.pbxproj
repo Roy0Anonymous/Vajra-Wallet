@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C613529C2A41A33000B7AE39 /* NodeErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C613529B2A41A33000B7AE39 /* NodeErrorView.swift */; };
 		C65690BA2A27FB5D002B013B /* SendPaymentOnChainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65690B92A27FB5D002B013B /* SendPaymentOnChainView.swift */; };
 		C6972C492A26B3CF00BBA785 /* CloseChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6972C482A26B3CF00BBA785 /* CloseChannelView.swift */; };
 		C6D8C5802A215B290057D42E /* Vajra_WalletApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C57F2A215B290057D42E /* Vajra_WalletApp.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C613529B2A41A33000B7AE39 /* NodeErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeErrorView.swift; sourceTree = "<group>"; };
 		C65690B92A27FB5D002B013B /* SendPaymentOnChainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentOnChainView.swift; sourceTree = "<group>"; };
 		C6972C482A26B3CF00BBA785 /* CloseChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseChannelView.swift; sourceTree = "<group>"; };
 		C6D8C57C2A215B290057D42E /* Vajra Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Vajra Wallet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -171,6 +173,7 @@
 				C6D8C5BA2A22569C0057D42E /* TabBarView.swift */,
 				C6D8C5C82A2257680057D42E /* CreateWalletView.swift */,
 				C6D8C5812A215B290057D42E /* WalletView.swift */,
+				C613529B2A41A33000B7AE39 /* NodeErrorView.swift */,
 				C6D8C5BC2A2256B40057D42E /* SettingsView.swift */,
 				C6E0FA522A3EF9E6003D31A5 /* NodeIdView.swift */,
 				C6D8C5BE2A2256CE0057D42E /* ListPeersView.swift */,
@@ -275,6 +278,7 @@
 			files = (
 				C6D8C5822A215B290057D42E /* WalletView.swift in Sources */,
 				C6D8C5942A215D290057D42E /* MyFeeEstimator.swift in Sources */,
+				C613529C2A41A33000B7AE39 /* NodeErrorView.swift in Sources */,
 				C6D8C5C92A2257680057D42E /* CreateWalletView.swift in Sources */,
 				C6D8C5AC2A2196CB0057D42E /* FileHandler.swift in Sources */,
 				C6D8C5AE2A2197D90057D42E /* MyFilter.swift in Sources */,

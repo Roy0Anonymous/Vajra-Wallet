@@ -23,7 +23,7 @@ struct CreateWalletView: View {
                 }
                 .frame(width: 150, height: 50, alignment: .center)
                 .background(.orange)
-                .cornerRadius(15)
+                .cornerRadius(10)
                 .navigationTitle(Text("Create Wallet"))
                 .navigationDestination(isPresented: $walletCreated) {
                     if walletCreated {
@@ -40,11 +40,5 @@ struct CreateWalletView: View {
 
             }
         }
-    }
-}
-
-struct CreateWalletView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateWalletView()
     }
 }

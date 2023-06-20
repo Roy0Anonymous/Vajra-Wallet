@@ -18,16 +18,15 @@ public class BDKManager: ObservableObject {
     var descriptorSecretKey: DescriptorSecretKey?
     var descriptor: Descriptor?
     
-    private let bdkQueue = DispatchQueue(label: "bdkQueue", qos: .userInitiated)
     private let databaseConfig: DatabaseConfig
     private let blockchainConfig: BlockchainConfig
     private var blockchain: Blockchain?
     
-    init(net: Network) {
-        print("BDK Setup Started")
-        self.network = net
+    init(network: Network) {
+        LDKManager.activityLogger.info("BDK Setup Started")
+        self.network = network
         self.databaseConfig = DatabaseConfig.memory
-        let testnetURL = "https://blockstream.info/testnet/api"// "https://mutinynet.com/api"
+        let testnetURL = "https://blockstream.info/testnet/api"
         let regtestURL = "http://127.0.0.1:3002"
         let esploraConfig = EsploraConfig(baseUrl: network == .regtest ? regtestURL : testnetURL, proxy: nil, concurrency: 5, stopGap: 20, timeout: nil)
         self.blockchainConfig = BlockchainConfig.esplora(config: esploraConfig)
@@ -39,10 +38,10 @@ public class BDKManager: ObservableObject {
             do {
                 self.mnemonic = try Mnemonic.fromString(mnemonic: mnemonicStr)
                 self.descriptorSecretKey = DescriptorSecretKey(
-                    network: net,
+                    network: network,
                     mnemonic: self.mnemonic!,
                     password: nil)
-                self.descriptor = Descriptor.newBip84(secretKey: descriptorSecretKey!, keychain: .external, network: net)
+                self.descriptor = Descriptor.newBip84(secretKey: descriptorSecretKey!, keychain: .external, network: network)
                 loadWallet(descriptor: descriptor!, changeDescriptor: nil)
                 print("Wallet Loaded")
             } catch {
@@ -54,7 +53,7 @@ public class BDKManager: ObservableObject {
         } catch {
             print("Error Starting BDK")
         }
-        print("BDK Setup Finished")
+        LDKManager.activityLogger.info("BDK Setup Finished")
     }
     
     public func loadWallet(descriptor: Descriptor, changeDescriptor: Descriptor?) {
@@ -72,21 +71,21 @@ public class BDKManager: ObservableObject {
     
     public func sync() {
         if wallet != nil {
-            self.syncState = SyncState.syncing
-            bdkQueue.async {
-                do {
-                    let blockchain = try Blockchain(config: self.blockchainConfig)
-                    try self.wallet!.sync(blockchain: blockchain, progress: nil)
-                    DispatchQueue.main.async {
-                        self.getBalance()
-                        self.getTransactions()
-                        self.syncState = SyncState.synced
-                    }
-                } catch let error {
-                    debugPrint(error.localizedDescription)
-                    DispatchQueue.main.async {
-                        self.syncState = SyncState.failed
-                    }
+            DispatchQueue.main.async {
+                self.syncState = SyncState.syncing
+            }
+            do {
+                let blockchain = try Blockchain(config: self.blockchainConfig)
+                try self.wallet!.sync(blockchain: blockchain, progress: nil)
+                DispatchQueue.main.async {
+                    self.getBalance()
+                    self.getTransactions()
+                    self.syncState = SyncState.synced
+                }
+            } catch let error {
+                debugPrint(error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.syncState = SyncState.failed
                 }
             }
         }
@@ -112,7 +111,7 @@ public class BDKManager: ObservableObject {
     public func getAddress(addressIndex: AddressIndex) -> String? {
         do {
             let addressInfo = try self.wallet!.getAddress(addressIndex: addressIndex)
-            print(addressInfo.address.asString())
+            LDKManager.activityLogger.log("New Address: \(addressInfo.address.asString())")
             return addressInfo.address.asString()
         } catch (let error){
             debugPrint(error.localizedDescription)
