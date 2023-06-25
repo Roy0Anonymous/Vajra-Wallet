@@ -10,7 +10,6 @@ import LightningDevKit
 
 class BlockchainData {
     static func broadcastTx(tx: [UInt8], network: Network) -> String? {
-        print("Broadcasting Transaction")
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx")!
@@ -33,7 +32,6 @@ class BlockchainData {
     }
 
     static func getTx(txid: String, network: Network) -> Tx? {
-        print("Getting Transaction")
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx/\(txid)")!
@@ -57,7 +55,6 @@ class BlockchainData {
     }
 
     static func getTxHex(txid: String, network: Network) -> String? {
-        print("Getting Transaction Hex")
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/hex")!
@@ -74,7 +71,6 @@ class BlockchainData {
     }
 
     static func getBlockHeader(hash: String, network: Network) -> String? {
-        print("Getting Block Header")
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/block/\(hash)/header")!
@@ -91,7 +87,6 @@ class BlockchainData {
     }
     
     static func getMerkleProof(txid: String, network: Network) -> MerkleProof? {
-        print("Getting Merkle Proof")
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/merkle-proof")!
@@ -115,7 +110,6 @@ class BlockchainData {
     }
 
     static func getTxStatus(txid: String, network: Network) -> TxStatus? {
-        print("Getting Transaction Status")
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/status")!
@@ -139,7 +133,6 @@ class BlockchainData {
     }
     
     static func getTxRaw(txid: String, network: Network) -> Data? {
-        print("Getting Transaction Raw")
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/raw")!
@@ -152,7 +145,6 @@ class BlockchainData {
     }
     
     public static func outSpend(txid: String, index: UInt16, network: Network) -> OutSpent? {
-        print("Getting OutSpend")
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx/\(txid)/outspend/\(index)")!
@@ -176,7 +168,6 @@ class BlockchainData {
     }
     
     static func getTipHeight(network: Network) -> UInt32? {
-        print("Getting Tip Height")
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/blocks/tip/height")!
@@ -195,7 +186,6 @@ class BlockchainData {
     }
     
     static func getTipHash(network: Network) -> String? {
-        print("Getting Tip Hash")
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/blocks/tip/hash")!

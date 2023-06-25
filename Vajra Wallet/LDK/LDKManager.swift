@@ -94,6 +94,34 @@ public class LDKManager: ObservableObject {
             print("New Network Graph Created")
         }
         
+//        let rgs = RapidGossipSync(networkGraph: netGraph, logger: logger)
+//        if !rgs.isInitialSyncComplete() {
+//            let snapshot = getSnapshot(lastSyncTimeStamp: 0)!
+//            print("RGS first time started")
+//            let res = rgs.updateNetworkGraphNoStd(updateData: snapshot, currentTimeUnix: 0)
+//            print("RGS first time finished")
+//            if res.isOk() {
+//                let data = Data(String(res.getValue()!).utf8)
+//                FileHandler.writeData(data: data, path: "RGSLastSync")
+//                print("RGS Initialized")
+//            }
+//        } else {
+//            let lastSyncStr = String(data: FileHandler.readData(path: "RGSLastSync")!, encoding: .utf8)!
+//            let lastSync = UInt32(lastSyncStr)!
+//            print("Current Time: \(lastSync)")
+//            let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
+//            print("Current Time: \(timestampSeconds)")
+//            let snapshot = getSnapshot(lastSyncTimeStamp: 0)!
+//            print("RGS next time started")
+//            let res = rgs.updateNetworkGraphNoStd(updateData: snapshot, currentTimeUnix: UInt64(lastSync))
+//            if res.isOk() {
+//                let data = Data(String(res.getValue()!).utf8)
+//                FileHandler.writeData(data: data, path: "RGSLastSync")
+//                print("RGS Initialized")
+//            }
+//            print("RGS next time started")
+//        }
+//        
         if FileHandler.fileExists(path: "ProbabilisticScorer") {
             let file = FileHandler.readData(path: "ProbabilisticScorer")
             let scoringParams = ProbabilisticScoringParameters.initWithDefault()
@@ -228,7 +256,6 @@ public class LDKManager: ObservableObject {
                         confirmedTxs.append(newConfirmedTx)
                     }
                 } else {
-                    debugPrint(txId)
                     self.channelManager?.asConfirm().transactionUnconfirmed(txid: Utils.hexStringToByteArray(txIdHex))
                     self.chainMonitor?.asConfirm().transactionUnconfirmed(txid: Utils.hexStringToByteArray(txIdHex))
                 }
@@ -266,9 +293,6 @@ public class LDKManager: ObservableObject {
                             let txHex = BlockchainData.getTxHex(txid: tx.txid, network: network)!
                             let blockHeader = BlockchainData.getBlockHeader(hash: tx.status.block_hash, network: network)!
                             let merkleProof = BlockchainData.getMerkleProof(txid: tx.txid, network: network)!
-                            print(txHex)
-                            print(blockHeader)
-                            print(merkleProof)
                             if tx.status.block_height == merkleProof.block_height {
                                 let newConfirmedTx = ConfirmedTx(txId: tx.txid, tx: Utils.hexStringToByteArray(txHex), block_height: tx.status.block_height, block_header: blockHeader, merkle_proof_pos: merkleProof.pos)
                                 confirmedTxs.append(newConfirmedTx)
@@ -293,10 +317,7 @@ public class LDKManager: ObservableObject {
             let x: (UInt, [UInt8]) = (UInt, [UInt8])(cTx.merkle_proof_pos, cTx.tx)
             twoTuple.append(x)
             
-            debugPrint(cTx.txId)
-            
             self.channelManager?.asConfirm().transactionsConfirmed(header: Utils.hexStringToByteArray(cTx.block_header), txdata: twoTuple, height: UInt32(cTx.block_height))
-            
             self.chainMonitor?.asConfirm().transactionsConfirmed(header: Utils.hexStringToByteArray(cTx.block_header), txdata: twoTuple, height: UInt32(cTx.block_height))
         }
         
@@ -315,6 +336,15 @@ public class LDKManager: ObservableObject {
         self.channelManagerConstructor!.chainSyncCompleted(persister: channelManagerPersister!)
     }
     
+//    func getSnapshot(lastSyncTimeStamp: UInt32) -> [UInt8]? {
+//        let url = URL(string: "https://rapidsync.lightningdevkit.org/testnet/snapshot/\(lastSyncTimeStamp)")!
+//        let data = DataGetPost.get(url: url)
+//        if let data = data {
+//            return [UInt8](data)
+//        }
+//        return nil
+//    }
+
     func getNodeId() -> String {
         guard let channelManager = self.channelManager else {
             return "failed to get nodeID"

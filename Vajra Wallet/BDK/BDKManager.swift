@@ -26,7 +26,7 @@ public class BDKManager: ObservableObject {
         LDKManager.activityLogger.info("BDK Setup Started")
         self.network = network
         self.databaseConfig = DatabaseConfig.memory
-        let testnetURL = "https://blockstream.info/testnet/api"
+        let testnetURL = "https://mempool.space/testnet/api"//"https://blockstream.info/testnet/api"
         let regtestURL = "http://127.0.0.1:3002"
         let esploraConfig = EsploraConfig(baseUrl: network == .regtest ? regtestURL : testnetURL, proxy: nil, concurrency: 5, stopGap: 20, timeout: nil)
         self.blockchainConfig = BlockchainConfig.esplora(config: esploraConfig)
