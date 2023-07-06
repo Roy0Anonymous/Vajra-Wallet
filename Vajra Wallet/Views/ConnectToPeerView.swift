@@ -41,9 +41,13 @@ struct CustomTextField: View {
                 .frame(maxWidth: .infinity, minHeight: 50)
                 .background(Color.white)
                 .foregroundColor(.black)
-                .cornerRadius(10)
                 .padding(.horizontal)
                 .keyboardType(.decimalPad)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.blue, lineWidth: 1)
+                )
+                .padding(.horizontal)
             if track.isEmpty {
                 Text("Enter the \(name)")
                     .frame(maxWidth: .infinity, minHeight: 50)

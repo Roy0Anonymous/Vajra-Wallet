@@ -448,6 +448,15 @@ public class LDKManager: ObservableObject {
         let res = self.channelManager?.closeChannel(channelId: channelId, counterpartyNodeId: counterpartyNodeId)
         return res!.isOk()
     }
+    
+    func listChannels() -> (UInt64, [ChannelDetails]) {
+        let channels = channelManager.listChannels()
+        var totalBalance: UInt64 = 0
+        for channel in channels {
+            totalBalance += channel.getBalanceMsat()
+        }
+        return (totalBalance, channels)
+    }
 }
 
 enum LDKError: Error {

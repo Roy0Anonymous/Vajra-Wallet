@@ -11,8 +11,8 @@ import LightningDevKit
 struct ListChannelsView: View {
     @EnvironmentObject var ldkManager: LDKManager
     var body: some View {
-        let channels = ldkManager.channelManager?.listChannels()
-        if channels!.isEmpty {
+        let balanceChannel = ldkManager.listChannels()
+        if balanceChannel.1.isEmpty {
             VStack() {
                 Image(systemName: "list.bullet.rectangle.portrait")
                     .resizable()
@@ -25,8 +25,11 @@ struct ListChannelsView: View {
             }
             .navigationTitle(Text("Channels"))
         } else {
+            Text("Total Balance: \(balanceChannel.0)")
+                .font(.title3)
+                .frame(maxWidth: .infinity)
             ScrollView {
-                ForEach(channels!, id: \.self) { channel in
+                ForEach(balanceChannel.1, id: \.self) { channel in
                     ChannelView(channel: channel)
                     Divider()
                 }
@@ -49,9 +52,18 @@ struct ChannelView: View {
             }
             Text("Channel Id")
             Text("\(Utils.bytesToHex(bytes: channel.getChannelId()!))")
-            Text("Total Balance:\n \(channel.getBalanceMsat())")
+            Text("Channel Balance:\n \(channel.getBalanceMsat())")
             Text("Outbound Capactity:\n \(channel.getOutboundCapacityMsat())")
             Text("Inbound Capactity:\n \(channel.getInboundCapacityMsat())")
+            Button {
+                UIPasteboard.general.string = Utils.bytesToHex(bytes: channel.getChannelId()!)
+            } label: {
+                Text("Copy Channel ID")
+                    .foregroundColor(.white)
+            }
+            .frame(width: 150, height: 50, alignment: .center)
+            .background(.blue)
+            .cornerRadius(10)
         }
         .multilineTextAlignment(.center)
     }
