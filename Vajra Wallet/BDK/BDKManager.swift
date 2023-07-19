@@ -127,8 +127,6 @@ public class BDKManager: ObservableObject {
                     amount: amount).feeRate(satPerVbyte: 4.0)
                     .finish(wallet: self.wallet!)
                 let _ = try self.wallet!.sign(psbt: transaction.psbt, signOptions: nil)
-                let blockchain = try Blockchain(config: self.blockchainConfig)
-                try blockchain.broadcast(transaction: transaction.psbt.extractTx())
                 return transaction.psbt.extractTx()
             } catch let error {
                 debugPrint(error.localizedDescription)

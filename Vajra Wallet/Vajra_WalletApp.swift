@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct Vajra_WalletApp: App {
-    @ObservedObject var ldkManager: LDKManager = LDKManager(network: .Regtest)
+    @ObservedObject var ldkManager: LDKManager = LDKManager(network: .Testnet)
     @State var hasLoaded: Bool = false
     let mnemonicIsPresent = FileHandler.fileExists(path: "Mnemonic")
     var body: some Scene {

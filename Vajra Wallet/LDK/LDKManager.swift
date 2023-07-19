@@ -94,34 +94,23 @@ public class LDKManager: ObservableObject {
             print("New Network Graph Created")
         }
         
-//        let rgs = RapidGossipSync(networkGraph: netGraph, logger: logger)
-//        if !rgs.isInitialSyncComplete() {
-//            let snapshot = getSnapshot(lastSyncTimeStamp: 0)!
-//            print("RGS first time started")
-//            let res = rgs.updateNetworkGraphNoStd(updateData: snapshot, currentTimeUnix: 0)
-//            print("RGS first time finished")
-//            if res.isOk() {
-//                let data = Data(String(res.getValue()!).utf8)
-//                FileHandler.writeData(data: data, path: "RGSLastSync")
-//                print("RGS Initialized")
-//            }
-//        } else {
-//            let lastSyncStr = String(data: FileHandler.readData(path: "RGSLastSync")!, encoding: .utf8)!
-//            let lastSync = UInt32(lastSyncStr)!
-//            print("Current Time: \(lastSync)")
-//            let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
-//            print("Current Time: \(timestampSeconds)")
-//            let snapshot = getSnapshot(lastSyncTimeStamp: 0)!
-//            print("RGS next time started")
-//            let res = rgs.updateNetworkGraphNoStd(updateData: snapshot, currentTimeUnix: UInt64(lastSync))
-//            if res.isOk() {
-//                let data = Data(String(res.getValue()!).utf8)
-//                FileHandler.writeData(data: data, path: "RGSLastSync")
-//                print("RGS Initialized")
-//            }
-//            print("RGS next time started")
-//        }
-//        
+        if network != .Regtest {
+            let rgs = RapidGossipSync(networkGraph: netGraph, logger: logger)
+            if let lastSync = netGraph.getLastRapidGossipSyncTimestamp(), let snapshot = getSnapshot(lastSyncTimeStamp: lastSync) {
+                let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
+                let res = rgs.updateNetworkGraphNoStd(updateData: snapshot, currentTimeUnix: timestampSeconds)
+                if res.isOk() {
+                    print("RGS updated")
+                }
+            } else if let snapshot = getSnapshot(lastSyncTimeStamp: 0) {
+                let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
+                let res = rgs.updateNetworkGraphNoStd(updateData: snapshot, currentTimeUnix: timestampSeconds)
+                if res.isOk() {
+                    print("RGS initialized for the first time")
+                }
+            }
+        }
+        
         if FileHandler.fileExists(path: "ProbabilisticScorer") {
             let file = FileHandler.readData(path: "ProbabilisticScorer")
             let scoringParams = ProbabilisticScoringParameters.initWithDefault()
@@ -205,7 +194,6 @@ public class LDKManager: ObservableObject {
         self.channelManagerPersister = MyChannelManagerPersister()
         self.channelManagerPersister?.ldkManager = self
         self.broadcaster?.ldkManager = self
-        
         if FileHandler.fileExists(path: "Peers") {
             do {
                 let urls = try FileHandler.contentsOfDirectory(atPath: "Peers")
@@ -336,14 +324,19 @@ public class LDKManager: ObservableObject {
         self.channelManagerConstructor!.chainSyncCompleted(persister: channelManagerPersister!)
     }
     
-//    func getSnapshot(lastSyncTimeStamp: UInt32) -> [UInt8]? {
-//        let url = URL(string: "https://rapidsync.lightningdevkit.org/testnet/snapshot/\(lastSyncTimeStamp)")!
-//        let data = DataGetPost.get(url: url)
-//        if let data = data {
-//            return [UInt8](data)
-//        }
-//        return nil
-//    }
+    func getSnapshot(lastSyncTimeStamp: UInt32) -> [UInt8]? {
+        let url: URL
+        if network == .Testnet {
+            url = URL(string: "https://rapidsync.lightningdevkit.org/testnet/snapshot/\(lastSyncTimeStamp)")!
+        } else {
+            url = URL(string: "https://rapidsync.lightningdevkit.org/snapshot/\(lastSyncTimeStamp)")!
+        }
+        let data = DataGetPost.get(url: url)
+        if let data = data {
+            return [UInt8](data)
+        }
+        return nil
+    }
 
     func getNodeId() -> String {
         guard let channelManager = self.channelManager else {
