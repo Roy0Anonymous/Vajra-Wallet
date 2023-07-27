@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C606D2322A7319680069457B /* MyKeysManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C606D2312A7319680069457B /* MyKeysManager.swift */; };
 		C613529C2A41A33000B7AE39 /* NodeErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C613529B2A41A33000B7AE39 /* NodeErrorView.swift */; };
 		C65690BA2A27FB5D002B013B /* SendPaymentOnChainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65690B92A27FB5D002B013B /* SendPaymentOnChainView.swift */; };
 		C6972C492A26B3CF00BBA785 /* CloseChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6972C482A26B3CF00BBA785 /* CloseChannelView.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C606D2312A7319680069457B /* MyKeysManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKeysManager.swift; sourceTree = "<group>"; };
 		C613529B2A41A33000B7AE39 /* NodeErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeErrorView.swift; sourceTree = "<group>"; };
 		C65690B92A27FB5D002B013B /* SendPaymentOnChainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentOnChainView.swift; sourceTree = "<group>"; };
 		C6972C482A26B3CF00BBA785 /* CloseChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseChannelView.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				C6D8C5992A215E6C0057D42E /* MyPersister.swift */,
 				C6D8C5AD2A2197D90057D42E /* MyFilter.swift */,
 				C6D8C5AF2A2252B40057D42E /* MyChannelManagerPersister.swift */,
+				C606D2312A7319680069457B /* MyKeysManager.swift */,
 				C6D8C5B12A2254120057D42E /* LDKManager.swift */,
 			);
 			path = LDK;
@@ -287,6 +290,7 @@
 				C6D8C5A22A21933E0057D42E /* Utils.swift in Sources */,
 				C6D8C59E2A2192CF0057D42E /* BlockchainData.swift in Sources */,
 				C6EA67512A25038A00A6867D /* SendPaymentView.swift in Sources */,
+				C606D2322A7319680069457B /* MyKeysManager.swift in Sources */,
 				C6D8C5C12A2256D60057D42E /* ConnectToPeerView.swift in Sources */,
 				C6D8C5A42A2193570057D42E /* MerkleProof.swift in Sources */,
 				C6972C492A26B3CF00BBA785 /* CloseChannelView.swift in Sources */,

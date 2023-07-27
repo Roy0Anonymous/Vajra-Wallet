@@ -18,7 +18,8 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
             do {
                 let address = ldkManager!.bdkManager.getAddress(addressIndex: .new)!
                 let script = try Address(address: address).scriptPubkey().toBytes()
-                let res = ldkManager?.keysManager?.spendSpendableOutputs(descriptors: outputs, outputs: [], changeDestinationScript: script, feerateSatPer1000Weight: 1000)
+//                let res = ldkManager?.keysManager?.spendSpendableOutputs(descriptors: outputs, outputs: [], changeDestinationScript: script, feerateSatPer1000Weight: 1000)
+                let res = ldkManager?.myKeysManager.keysManager.spendSpendableOutputs(descriptors: outputs, outputs: [], changeDestinationScript: script, feerateSatPer1000Weight: 1000)
                 if res!.isOk() {
                     print("Claimed channel amount")
                     ldkManager?.broadcaster?.broadcastTransaction(tx: res!.getValue()!)
