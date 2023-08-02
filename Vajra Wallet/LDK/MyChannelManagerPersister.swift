@@ -10,25 +10,10 @@ import LightningDevKit
 import BitcoinDevKit
 
 class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
-    var ldkManager: LDKManager? = nil
+    weak var ldkManager: LDKManager? = nil
     func handleEvent(event: Event) {
-        if let event = event.getValueAsSpendableOutputs() {
+        if let _ = event.getValueAsSpendableOutputs() {
             print("handleEvent: trying to spend output")
-            let outputs = event.getOutputs()
-            do {
-                let address = ldkManager!.bdkManager.getAddress(addressIndex: .new)!
-                let script = try Address(address: address).scriptPubkey().toBytes()
-//                let res = ldkManager?.keysManager?.spendSpendableOutputs(descriptors: outputs, outputs: [], changeDestinationScript: script, feerateSatPer1000Weight: 1000)
-                let res = ldkManager?.myKeysManager.keysManager.spendSpendableOutputs(descriptors: outputs, outputs: [], changeDestinationScript: script, feerateSatPer1000Weight: 1000)
-                if res!.isOk() {
-                    print("Claimed channel amount")
-                    ldkManager?.broadcaster?.broadcastTransaction(tx: res!.getValue()!)
-                } else {
-                    print("Failed to claim channel amount")
-                }
-            } catch {
-                print(error)
-            }
         }
         else if let paymentSentEvent = event.getValueAsPaymentSent() {
             print("handleEvent: Payment Sent \(paymentSentEvent)")

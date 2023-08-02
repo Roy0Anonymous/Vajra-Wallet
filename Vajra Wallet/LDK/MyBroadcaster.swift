@@ -8,7 +8,7 @@
 import LightningDevKit
 
 class MyBroacaster: BroadcasterInterface {
-    var ldkManager: LDKManager? = nil
+    weak var ldkManager: LDKManager? = nil
     override func broadcastTransaction(tx: [UInt8]) {
         var txId: String?
         if ldkManager!.network == .Regtest {
