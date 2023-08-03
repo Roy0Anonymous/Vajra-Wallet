@@ -34,7 +34,8 @@ public class LDKManager: ObservableObject {
         }
     }
     var broadcaster: MyBroacaster!
-    var keysManager: KeysManager!
+//    var keysManager: KeysManager!
+    var myKeysManager: MyKeysManager!
     var channelManager: LightningDevKit.ChannelManager!
     let network: Bindings.Network
     
@@ -64,7 +65,8 @@ public class LDKManager: ObservableObject {
         let seed = bdkManager.getPrivKey()
         let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
         let timestampNanos = UInt32.init(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
-        self.keysManager = KeysManager(seed: seed, startingTimeSecs: timestampSeconds, startingTimeNanos: timestampNanos)
+//        self.keysManager = KeysManager(seed: seed, startingTimeSecs: timestampSeconds, startingTimeNanos: timestampNanos)
+        self.myKeysManager = MyKeysManager(seed: seed, startingTimeSecs: timestampSeconds, startingTimeNanos: timestampNanos, wallet: bdkManager.wallet!)
         
         let handshakeConfig = ChannelHandshakeConfig.initWithDefault()
         handshakeConfig.setMinimumDepth(val: 1)
@@ -113,8 +115,8 @@ public class LDKManager: ObservableObject {
         
         if FileHandler.fileExists(path: "ProbabilisticScorer") {
             let file = FileHandler.readData(path: "ProbabilisticScorer")
-            let scoringParams = ProbabilisticScoringParameters.initWithDefault()
-            let scorerReadResult = ProbabilisticScorer.read(ser: [UInt8](file!), argA: scoringParams, argB: netGraph, argC: logger)
+            let decayParams = ProbabilisticScoringDecayParameters.initWithDefault()
+            let scorerReadResult = ProbabilisticScorer.read(ser: [UInt8](file!), argA: decayParams, argB: netGraph, argC: logger)
             if let readResult = scorerReadResult.getValue() {
                 let probabilisticScorer = readResult
                 let score = probabilisticScorer.asScore()
@@ -122,16 +124,16 @@ public class LDKManager: ObservableObject {
                 print("Probabilistic Scorer loaded and running")
             } else {
                 print("Couldn't loading Probabilistic Scorer")
-                let params = ProbabilisticScoringParameters.initWithDefault()
-                let probabilisticScorer = ProbabilisticScorer(params: params, networkGraph: netGraph, logger: logger)
+                let decayParams = ProbabilisticScoringDecayParameters.initWithDefault()
+                let probabilisticScorer = ProbabilisticScorer(decayParams: decayParams, networkGraph: netGraph, logger: logger)
                 let score = probabilisticScorer.asScore()
                 self.scorer = MultiThreadedLockableScore(score: score)
                 print("Creating new Probabilistic Scorer")
             }
         }
         else {
-            let params = ProbabilisticScoringParameters.initWithDefault()
-            let probabilisticScorer = ProbabilisticScorer(params: params, networkGraph: netGraph, logger: logger)
+            let decayParams = ProbabilisticScoringDecayParameters.initWithDefault()
+            let probabilisticScorer = ProbabilisticScorer(decayParams: decayParams, networkGraph: netGraph, logger: logger)
             let score = probabilisticScorer.asScore()
             self.scorer = MultiThreadedLockableScore(score: score)
             print("Creating new Probabilistic Scorer")
@@ -163,7 +165,8 @@ public class LDKManager: ObservableObject {
             print("Serialized Channel Monitors not Available")
         }
         
-        let channelManagerConstructionParameters = ChannelManagerConstructionParameters(config: userConfig, entropySource: keysManager.asEntropySource(), nodeSigner: keysManager.asNodeSigner(), signerProvider: keysManager.asSignerProvider(), feeEstimator: feeEstimator, chainMonitor: chainMonitor, txBroadcaster: broadcaster, logger: logger, enableP2PGossip: true, scorer: scorer)
+//        let channelManagerConstructionParameters = ChannelManagerConstructionParameters(config: userConfig, entropySource: keysManager.asEntropySource(), nodeSigner: keysManager.asNodeSigner(), signerProvider: keysManager.asSignerProvider(), feeEstimator: feeEstimator, chainMonitor: chainMonitor, txBroadcaster: broadcaster, logger: logger, enableP2PGossip: true, scorer: scorer)
+        let channelManagerConstructionParameters = ChannelManagerConstructionParameters(config: userConfig, entropySource: myKeysManager.keysManager.asEntropySource(), nodeSigner: myKeysManager.keysManager.asNodeSigner(), signerProvider: myKeysManager.signerProvider, feeEstimator: feeEstimator, chainMonitor: chainMonitor, txBroadcaster: broadcaster, logger: logger, enableP2PGossip: true, scorer: scorer)
         
         var latestBlockHash: [UInt8]? = nil
         var latestBlockHeight: UInt32? = nil
@@ -414,7 +417,7 @@ public class LDKManager: ObservableObject {
     }
     
     func sendPayment(invoice: String) -> Bool {
-        let invoiceResult = Invoice.fromStr(s: invoice)
+        let invoiceResult = Bolt11Invoice.fromStr(s: invoice) //Invoice.fromStr(s: invoice)
         guard let invoice = invoiceResult.getValue(), let channelManager = self.channelManager else {
             print("Could not parse invoice")
             return false
@@ -429,7 +432,9 @@ public class LDKManager: ObservableObject {
     }
     
     func generateInvoice(amount: UInt64, expiry: UInt32) -> String? {
-        let invoice = Bindings.createInvoiceFromChannelmanager(channelmanager: self.channelManager!, nodeSigner: self.keysManager!.asNodeSigner(), logger: self.logger, network: currency, amtMsat: amount, description: "Test Invoice", invoiceExpiryDeltaSecs: expiry, minFinalCltvExpiryDelta: nil)
+//        let invoice = Bindings.createInvoiceFromChannelmanager(channelmanager: self.channelManager!, nodeSigner: self.keysManager!.asNodeSigner(), logger: self.logger, network: currency, amtMsat: amount, description: "Test Invoice", invoiceExpiryDeltaSecs: expiry, minFinalCltvExpiryDelta: nil)
+        let invoice = Bindings.createInvoiceFromChannelmanager(channelmanager: self.channelManager!, nodeSigner: myKeysManager.keysManager.asNodeSigner(), logger: self.logger, network: currency, amtMsat: amount, description: "Test Invoice", invoiceExpiryDeltaSecs: expiry, minFinalCltvExpiryDelta: nil)
+        
         if invoice.isOk() {
             return invoice.getValue()!.toStr()
         }

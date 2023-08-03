@@ -8,13 +8,13 @@
 import LightningDevKit
 
 class MyBroacaster: BroadcasterInterface {
-    var ldkManager: LDKManager? = nil
-    override func broadcastTransaction(tx: [UInt8]) {
-        var txId: String?
+    weak var ldkManager: LDKManager? = nil
+    override func broadcastTransactions(txs: [[UInt8]]) {
+        var txId: [String]?
         if ldkManager!.network == .Regtest {
-            txId = BlockchainData.broadcastTx(tx: tx, network: .Regtest)
+            txId = BlockchainData.broadcastTx(txs: txs, network: .Regtest)
         } else {
-            txId = BlockchainData.broadcastTx(tx: tx, network: .Testnet)
+            txId = BlockchainData.broadcastTx(txs: txs, network: .Testnet)
         }
         print("Broadcast Transaction TxId: \(String(describing: txId))")
     }
