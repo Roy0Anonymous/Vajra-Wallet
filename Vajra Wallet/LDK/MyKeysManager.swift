@@ -12,9 +12,9 @@ import BitcoinDevKit
 class MyKeysManager {
     let keysManager: KeysManager
     let signerProvider: MySignerProvider
+    let wallet: BitcoinDevKit.Wallet
     
-    let wallet: Wallet
-    init(seed: [UInt8], startingTimeSecs: UInt64, startingTimeNanos: UInt32, wallet: Wallet) {
+    init(seed: [UInt8], startingTimeSecs: UInt64, startingTimeNanos: UInt32, wallet: BitcoinDevKit.Wallet) {
         self.keysManager = KeysManager(seed: seed, startingTimeSecs: startingTimeSecs, startingTimeNanos: startingTimeNanos)
         self.wallet = wallet
         signerProvider = MySignerProvider()
@@ -36,16 +36,16 @@ class MySignerProvider: SignerProvider {
         return myKeysManager!.keysManager.asSignerProvider().readChanSigner(reader: reader)
     }
     
-    override func getDestinationScript() -> [UInt8] {
+    override func getDestinationScript() -> Bindings.Result_ScriptNoneZ {
         do {
             let address = try myKeysManager!.wallet.getAddress(addressIndex: .new)
-            return address.address.scriptPubkey().toBytes()
+            return Bindings.Result_ScriptNoneZ.initWithOk(o: address.address.scriptPubkey().toBytes())
         } catch {
             return myKeysManager!.keysManager.asSignerProvider().getDestinationScript()
         }
     }
-
-    override func getShutdownScriptpubkey() -> Bindings.ShutdownScript {
+    
+    override func getShutdownScriptpubkey() -> Bindings.Result_ShutdownScriptNoneZ {
         do {
             let address = try myKeysManager!.wallet.getAddress(addressIndex: .new).address
             let payload = address.payload()
@@ -89,7 +89,7 @@ class MySignerProvider: SignerProvider {
                 }
                 let res = ShutdownScript.newWitnessProgram(version: ver, program: program)
                 if res.isOk() {
-                    return res.getValue()!
+                    return Bindings.Result_ShutdownScriptNoneZ.initWithOk(o: res.getValue()!)
                 }
             }
             return myKeysManager!.keysManager.asSignerProvider().getShutdownScriptpubkey()

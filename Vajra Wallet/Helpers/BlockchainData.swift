@@ -9,7 +9,7 @@ import Foundation
 import LightningDevKit
 
 class BlockchainData {
-    static func broadcastTx(tx: [UInt8], network: Network) -> String? {
+    static func broadcastTx(txs: [[UInt8]], network: Network) -> [String]? {
         var url: URL
         if network == .Regtest {
             url = URL(string: "http://127.0.0.1:3002/tx")!
@@ -18,13 +18,17 @@ class BlockchainData {
             url = URL(string: "https://blockstream.info/testnet/api/tx")!
         }
         do {
-            let res = try DataGetPost.post(url: url, body: Utils.bytesToHex(bytes: tx))
-            guard let res = res else {
-                print("No Result found")
-                return nil
+            var txIds: [String] = []
+            for tx in txs {
+                let res = try DataGetPost.post(url: url, body: Utils.bytesToHex(bytes: tx))
+                guard let res = res else {
+                    print("No Result found")
+                    return nil
+                }
+                let txId = String(decoding: res, as: UTF8.self)
+                txIds.append(txId)
             }
-            let txId = String(decoding: res, as: UTF8.self)
-            return txId
+            return txIds
         } catch {
             print("Error while data POST: \(error.localizedDescription)")
             return nil
