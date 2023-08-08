@@ -12,8 +12,27 @@ import BitcoinDevKit
 class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
     weak var ldkManager: LDKManager? = nil
     func handleEvent(event: Event) {
-        if let _ = event.getValueAsSpendableOutputs() {
+        if let event = event.getValueAsSpendableOutputs() {
             print("handleEvent: trying to spend output")
+            let outputs = event.getOutputs()
+            do {
+                let address = ldkManager!.bdkManager.getAddress(addressIndex: .new)!
+                let script = try Address(address: address).scriptPubkey().toBytes()
+                let res = ldkManager!.myKeysManager.spendSpendableOutputs(
+                    descriptors: outputs,
+                    outputs: [],
+                    changeDestinationScript: script,
+                    feerateSatPer1000Weight: 1000,
+                    locktime: nil)
+                if res.isOk() {
+                    var txs: [[UInt8]] = []
+                    txs.append(res.getValue()!)
+                    ldkManager!.broadcaster.broadcastTransactions(txs: txs)
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+            
         }
         else if let paymentSentEvent = event.getValueAsPaymentSent() {
             print("handleEvent: Payment Sent \(paymentSentEvent)")
@@ -39,7 +58,7 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
             }
             print(result.isOk() ? "Open Channel Accepted" : "Open Channel Failed")
         }
-        // payment was claimed, so return preimage
+
         else if let paymentClaimedEvent = event.getValueAsPaymentClaimable() {
             print("handleEvent: PaymentClaimed")
             let paymentPreimage = paymentClaimedEvent.getPurpose().getValueAsInvoicePayment()?.getPaymentPreimage()
@@ -47,7 +66,7 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
             print("handleEvent: paymentClaimed preimage=\(paymentPreimage!)")
             
         }
-        // channel is ready to be funded
+
         else if let event = event.getValueAsFundingGenerationReady() {
             print("handleEvent: funding generation ready")
             let script = Script(rawOutputScript: event.getOutputScript())
