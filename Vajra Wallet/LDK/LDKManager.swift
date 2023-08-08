@@ -22,6 +22,7 @@ public class LDKManager: ObservableObject {
     private var peerManager: LightningDevKit.PeerManager!
     private var peerHandler: TCPPeerHandler!
     private let currency: Bindings.Currency
+    private let port: UInt16 = 9777
     static let ldkQueue = DispatchQueue(label: "ldkQueue", qos: .userInitiated)
     private var innerObjectSubscription: AnyCancellable?
     private func subscribeToInnerObject() {
@@ -34,18 +35,20 @@ public class LDKManager: ObservableObject {
         }
     }
     var broadcaster: MyBroacaster!
-//    var keysManager: KeysManager!
     var myKeysManager: MyKeysManager!
     var channelManager: LightningDevKit.ChannelManager!
     let network: Bindings.Network
     
-    init(network: Bindings.Network) {
-        if network == .Regtest {
-            self.network = Bindings.Network.Regtest
+    static let shared = LDKManager()
+    
+    private init() {
+        // Set LDK Network
+        self.network = .Regtest
+        
+        if self.network == .Regtest {
             self.currency = Bindings.Currency.Regtest
             self.bdkManager = BDKManager(network: .regtest)
         } else {
-            self.network = Bindings.Network.Testnet
             self.currency = Bindings.Currency.BitcoinTestnet
             self.bdkManager = BDKManager(network: .testnet)
         }
@@ -65,7 +68,6 @@ public class LDKManager: ObservableObject {
         let seed = bdkManager.getPrivKey()
         let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
         let timestampNanos = UInt32.init(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
-//        self.keysManager = KeysManager(seed: seed, startingTimeSecs: timestampSeconds, startingTimeNanos: timestampNanos)
         self.myKeysManager = MyKeysManager(seed: seed, startingTimeSecs: timestampSeconds, startingTimeNanos: timestampNanos, wallet: bdkManager.wallet!)
         
         let handshakeConfig = ChannelHandshakeConfig.initWithDefault()
@@ -165,7 +167,6 @@ public class LDKManager: ObservableObject {
             print("Serialized Channel Monitors not Available")
         }
         
-//        let channelManagerConstructionParameters = ChannelManagerConstructionParameters(config: userConfig, entropySource: keysManager.asEntropySource(), nodeSigner: keysManager.asNodeSigner(), signerProvider: keysManager.asSignerProvider(), feeEstimator: feeEstimator, chainMonitor: chainMonitor, txBroadcaster: broadcaster, logger: logger, enableP2PGossip: true, scorer: scorer)
         let channelManagerConstructionParameters = ChannelManagerConstructionParameters(config: userConfig, entropySource: myKeysManager.keysManager.asEntropySource(), nodeSigner: myKeysManager.keysManager.asNodeSigner(), signerProvider: myKeysManager.signerProvider, feeEstimator: feeEstimator, chainMonitor: chainMonitor, txBroadcaster: broadcaster, logger: logger, enableP2PGossip: true, scorer: scorer)
         
         var latestBlockHash: [UInt8]? = nil
@@ -193,10 +194,11 @@ public class LDKManager: ObservableObject {
         self.channelManager = channelManagerConstructor?.channelManager
         self.peerManager = channelManagerConstructor?.peerManager
         self.peerHandler = channelManagerConstructor?.getTCPPeerHandler()
+        _ = peerHandler.bind(address: "127.0.0.1", port: port)
         self.netGraph = channelManagerConstructor?.netGraph
         self.channelManagerPersister = MyChannelManagerPersister()
-        self.channelManagerPersister?.ldkManager = self
-        self.broadcaster?.ldkManager = self
+        self.channelManagerPersister?.ldkManager = LDKManager.shared
+        self.broadcaster?.ldkManager = LDKManager.shared
         if FileHandler.fileExists(path: "Peers") {
             do {
                 let urls = try FileHandler.contentsOfDirectory(atPath: "Peers")
@@ -402,7 +404,6 @@ public class LDKManager: ObservableObject {
         if createChannelResults == nil {
             return false
         }
-        //        print(createChannelResults?.getError()?.getValueAsApiMisuseError()?.getErr())
         guard let createChannelResults = createChannelResults else {
             print("Couldn't Create Channel")
             return false
@@ -417,14 +418,14 @@ public class LDKManager: ObservableObject {
     }
     
     func sendPayment(invoice: String) -> Bool {
-        let invoiceResult = Bolt11Invoice.fromStr(s: invoice) //Invoice.fromStr(s: invoice)
+        let invoiceResult = Bolt11Invoice.fromStr(s: invoice)
         guard let invoice = invoiceResult.getValue(), let channelManager = self.channelManager else {
             print("Could not parse invoice")
             return false
         }
-        
+
         let invoicePaymentResult = Bindings.payInvoice(invoice: invoice, retryStrategy: Bindings.Retry.initWithTimeout(a: 15), channelmanager: channelManager)
-        
+
         if invoicePaymentResult.isOk() {
             return true
         }
@@ -432,9 +433,7 @@ public class LDKManager: ObservableObject {
     }
     
     func generateInvoice(amount: UInt64, expiry: UInt32) -> String? {
-//        let invoice = Bindings.createInvoiceFromChannelmanager(channelmanager: self.channelManager!, nodeSigner: self.keysManager!.asNodeSigner(), logger: self.logger, network: currency, amtMsat: amount, description: "Test Invoice", invoiceExpiryDeltaSecs: expiry, minFinalCltvExpiryDelta: nil)
         let invoice = Bindings.createInvoiceFromChannelmanager(channelmanager: self.channelManager!, nodeSigner: myKeysManager.keysManager.asNodeSigner(), logger: self.logger, network: currency, amtMsat: amount, description: "Test Invoice", invoiceExpiryDeltaSecs: expiry, minFinalCltvExpiryDelta: nil)
-        
         if invoice.isOk() {
             return invoice.getValue()!.toStr()
         }

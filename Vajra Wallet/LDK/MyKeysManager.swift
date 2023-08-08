@@ -20,6 +20,17 @@ class MyKeysManager {
         signerProvider = MySignerProvider()
         signerProvider.myKeysManager = self
     }
+    
+    func spendSpendableOutputs(descriptors: [SpendableOutputDescriptor], outputs: [Bindings.TxOut], changeDestinationScript: [UInt8], feerateSatPer1000Weight: UInt32, locktime: UInt32?) -> Result_TransactionNoneZ {
+        let onlyNonStatic: [SpendableOutputDescriptor] = descriptors.filter { desc in
+            if desc.getValueType() == .StaticOutput {
+                return false
+            }
+            return true
+        }
+        let res = self.keysManager.spendSpendableOutputs(descriptors: onlyNonStatic, outputs: outputs, changeDestinationScript: changeDestinationScript, feerateSatPer1000Weight: feerateSatPer1000Weight, locktime: locktime)
+        return res
+    }
 }
 
 class MySignerProvider: SignerProvider {
