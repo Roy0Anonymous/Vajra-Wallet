@@ -359,13 +359,19 @@ public class LDKManager: ObservableObject {
         }
         
         let pubkeyIp = peerPubkeyIp.components(separatedBy: "@")
+        if pubkeyIp.count < 2 {
+            return false
+        }
         let ipPort = pubkeyIp[1].components(separatedBy: ":")
+        if ipPort.count < 2 {
+            return false
+        }
         
         guard let port = UInt16(ipPort[1]) else {
             print("Could not convert port to UInt16")
             return false
         }
-        
+
         let res = peerHandler.connect(address: ipPort[0], port: port, theirNodeId: Utils.hexStringToByteArray(pubkeyIp[0]))
         if (!res) {
             print("Failed to connect to peer")

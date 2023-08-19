@@ -155,10 +155,9 @@ public class BDKManager: ObservableObject {
         print("Wallet Created")
     }
     
-    public func broadcast(txHex: [UInt8]) {
+    public func broadcast(transaction: Transaction) {
         do {
-            let newTransaction = try Transaction(transactionBytes: txHex)
-            try blockchain!.broadcast(transaction: newTransaction)
+            try blockchain!.broadcast(transaction: transaction)
         } catch let error {
             debugPrint(error.localizedDescription)
         }

@@ -24,7 +24,12 @@ struct SendPaymentOnChainView: View {
                     return
                 }
                 let transaction = ldkManager.bdkManager.fundChannel(script: script, amount: amount)
-                success = transaction != nil ? true : false
+                if let transaction = transaction {
+                    ldkManager.bdkManager.broadcast(transaction: transaction)
+                    success = true
+                } else {
+                    success = false
+                }
             } catch {
                 print(error.localizedDescription)
             }
