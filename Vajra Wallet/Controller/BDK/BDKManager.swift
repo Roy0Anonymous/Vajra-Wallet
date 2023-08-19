@@ -155,15 +155,17 @@ public class BDKManager: ObservableObject {
         print("Wallet Created")
     }
     
-    public func broadcast(transaction: Transaction) {
+    public func broadcast(transaction: Transaction) -> Bool {
         do {
             try blockchain!.broadcast(transaction: transaction)
+            return true
         } catch let error {
             debugPrint(error.localizedDescription)
         }
+        return false
     }
     
-    func getPrivKey() -> [UInt8]{
+    func getPrivKey() -> [UInt8] {
         return descriptorSecretKey!.secretBytes()
     }
     

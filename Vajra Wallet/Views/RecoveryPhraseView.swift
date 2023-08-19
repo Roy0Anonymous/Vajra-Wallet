@@ -10,8 +10,19 @@ import SwiftUI
 struct RecoveryPhraseView: View {
     @EnvironmentObject var ldkManager: LDKManager
     var body: some View {
-        Text(ldkManager.bdkManager.getRecoveryPhrase()!)
-            .font(.title)
-            .navigationTitle(Text("Recovery Phrase"))
+        VStack {
+            Text(ldkManager.bdkManager.getRecoveryPhrase()!)
+                .font(.title)
+                .navigationTitle(Text("Recovery Phrase"))
+            Button {
+                UIPasteboard.general.string = ldkManager.bdkManager.getRecoveryPhrase()!
+            } label: {
+                Text("Copy to Clipboard")
+                    .foregroundColor(.white)
+            }
+            .frame(width: 150, height: 50, alignment: .center)
+            .background(.blue)
+            .cornerRadius(10)
+        }
     }
 }

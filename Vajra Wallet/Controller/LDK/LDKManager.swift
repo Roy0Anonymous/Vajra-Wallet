@@ -42,7 +42,7 @@ public class LDKManager: ObservableObject {
     static let shared = LDKManager()
     
     private init() {
-        // Set LDK Network
+        // Set the Bitcoin Network
         self.network = .Regtest
         
         if self.network == .Regtest {
