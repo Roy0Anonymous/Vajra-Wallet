@@ -10,49 +10,53 @@ import LightningDevKit
 import BitcoinDevKit
 
 class MyKeysManager {
-    let keysManager: KeysManager
-    let signerProvider: MySignerProvider
+    let inner: KeysManager
     let wallet: BitcoinDevKit.Wallet
+    let signerProvider: MySignerProvider
     
     init(seed: [UInt8], startingTimeSecs: UInt64, startingTimeNanos: UInt32, wallet: BitcoinDevKit.Wallet) {
-        self.keysManager = KeysManager(seed: seed, startingTimeSecs: startingTimeSecs, startingTimeNanos: startingTimeNanos)
+        self.inner = KeysManager(seed: seed, startingTimeSecs: startingTimeSecs, startingTimeNanos: startingTimeNanos)
         self.wallet = wallet
         signerProvider = MySignerProvider()
         signerProvider.myKeysManager = self
     }
-    
-    func spendSpendableOutputs(descriptors: [SpendableOutputDescriptor], outputs: [Bindings.TxOut], changeDestinationScript: [UInt8], feerateSatPer1000Weight: UInt32, locktime: UInt32?) -> Result_TransactionNoneZ {
+
+    // We drop all occurences of `SpendableOutputDescriptor::StaticOutput` (since they will be
+    // spendable by the BDK wallet) and forward any other descriptors to
+    // `KeysManager::spend_spendable_outputs`.
+    //
+    // Note you should set `locktime` to the current block height to mitigate fee sniping.
+    // See https://bitcoinops.org/en/topics/fee-sniping/ for more information.
+    func spendSpendableOutputs(descriptors: [SpendableOutputDescriptor], outputs: [Bindings.TxOut],
+                               changeDestinationScript: [UInt8], feerateSatPer1000Weight: UInt32,
+                               locktime: UInt32?) -> Result_TransactionNoneZ {
         let onlyNonStatic: [SpendableOutputDescriptor] = descriptors.filter { desc in
             if desc.getValueType() == .StaticOutput {
                 return false
             }
             return true
         }
-        let res = self.keysManager.spendSpendableOutputs(descriptors: onlyNonStatic, outputs: outputs, changeDestinationScript: changeDestinationScript, feerateSatPer1000Weight: feerateSatPer1000Weight, locktime: locktime)
+        let res = self.inner.spendSpendableOutputs(
+            descriptors: onlyNonStatic,
+            outputs: outputs,
+            changeDestinationScript: changeDestinationScript,
+            feerateSatPer1000Weight: feerateSatPer1000Weight,
+            locktime: locktime
+        )
         return res
     }
 }
 
 class MySignerProvider: SignerProvider {
     weak var myKeysManager: MyKeysManager?
-    override func deriveChannelSigner(channelValueSatoshis: UInt64, channelKeysId: [UInt8]) -> Bindings.WriteableEcdsaChannelSigner {
-        return myKeysManager!.keysManager.asSignerProvider().deriveChannelSigner(channelValueSatoshis: channelValueSatoshis, channelKeysId: channelKeysId)
-    }
     
-    override func generateChannelKeysId(inbound: Bool, channelValueSatoshis: UInt64, userChannelId: [UInt8]) -> [UInt8] {
-        return myKeysManager!.keysManager.asSignerProvider().generateChannelKeysId(inbound: inbound, channelValueSatoshis: channelValueSatoshis, userChannelId: userChannelId)
-    }
-    
-    override func readChanSigner(reader: [UInt8]) -> Bindings.Result_WriteableEcdsaChannelSignerDecodeErrorZ {
-        return myKeysManager!.keysManager.asSignerProvider().readChanSigner(reader: reader)
-    }
-    
+    // We return the destination and shutdown scripts derived by the BDK wallet.
     override func getDestinationScript() -> Bindings.Result_ScriptNoneZ {
         do {
             let address = try myKeysManager!.wallet.getAddress(addressIndex: .new)
             return Bindings.Result_ScriptNoneZ.initWithOk(o: address.address.scriptPubkey().toBytes())
         } catch {
-            return myKeysManager!.keysManager.asSignerProvider().getDestinationScript()
+            return .initWithErr()
         }
     }
     
@@ -103,9 +107,29 @@ class MySignerProvider: SignerProvider {
                     return Bindings.Result_ShutdownScriptNoneZ.initWithOk(o: res.getValue()!)
                 }
             }
-            return myKeysManager!.keysManager.asSignerProvider().getShutdownScriptpubkey()
+            return .initWithErr()
         } catch {
-            return myKeysManager!.keysManager.asSignerProvider().getShutdownScriptpubkey()
+            return .initWithErr()
         }
+    }
+    
+    // ... and redirect all other trait method implementations to the `inner` `KeysManager`.
+    override func deriveChannelSigner(channelValueSatoshis: UInt64, channelKeysId: [UInt8]) -> Bindings.WriteableEcdsaChannelSigner {
+        return myKeysManager!.inner.asSignerProvider().deriveChannelSigner(
+            channelValueSatoshis: channelValueSatoshis,
+            channelKeysId: channelKeysId
+        )
+    }
+    
+    override func generateChannelKeysId(inbound: Bool, channelValueSatoshis: UInt64, userChannelId: [UInt8]) -> [UInt8] {
+        return myKeysManager!.inner.asSignerProvider().generateChannelKeysId(
+            inbound: inbound,
+            channelValueSatoshis: channelValueSatoshis,
+            userChannelId: userChannelId
+        )
+    }
+    
+    override func readChanSigner(reader: [UInt8]) -> Bindings.Result_WriteableEcdsaChannelSignerDecodeErrorZ {
+        return myKeysManager!.inner.asSignerProvider().readChanSigner(reader: reader)
     }
 }

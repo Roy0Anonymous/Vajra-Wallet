@@ -140,7 +140,7 @@ public class BDKManager: ObservableObject {
     
     func createWallet() {
         print("Creating Wallet")
-        self.mnemonic = Mnemonic(wordCount: WordCount.words12)
+        self.mnemonic = Mnemonic(wordCount: .words12)
         self.descriptorSecretKey = DescriptorSecretKey(
             network: network,
             mnemonic: self.mnemonic!,
@@ -165,8 +165,11 @@ public class BDKManager: ObservableObject {
         return false
     }
     
-    func getPrivKey() -> [UInt8] {
-        return descriptorSecretKey!.secretBytes()
+    func getPrivKey() throws -> [UInt8] {
+        let ldkDerivationPath = try DerivationPath(path: "m/535h")
+        let ldkChild = try descriptorSecretKey!.derive(path: ldkDerivationPath)
+        let entropy = ldkChild.secretBytes()
+        return entropy
     }
     
     public func getBlockHeight() -> UInt32? {

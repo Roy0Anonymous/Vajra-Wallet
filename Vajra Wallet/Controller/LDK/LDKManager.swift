@@ -65,9 +65,9 @@ public class LDKManager: ObservableObject {
         
         self.chainMonitor = ChainMonitor(chainSource: filter, broadcaster: broadcaster, logger: logger, feeest: feeEstimator, persister: persister)
         
-        let seed = bdkManager.getPrivKey()
+        let seed = try! bdkManager.getPrivKey()
         let timestampSeconds = UInt64(NSDate().timeIntervalSince1970)
-        let timestampNanos = UInt32.init(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
+        let timestampNanos = UInt32(truncating: NSNumber(value: timestampSeconds * 1000 * 1000))
         self.myKeysManager = MyKeysManager(seed: seed, startingTimeSecs: timestampSeconds, startingTimeNanos: timestampNanos, wallet: bdkManager.wallet!)
         
         let handshakeConfig = ChannelHandshakeConfig.initWithDefault()
@@ -167,7 +167,7 @@ public class LDKManager: ObservableObject {
             print("Serialized Channel Monitors not Available")
         }
         
-        let channelManagerConstructionParameters = ChannelManagerConstructionParameters(config: userConfig, entropySource: myKeysManager.keysManager.asEntropySource(), nodeSigner: myKeysManager.keysManager.asNodeSigner(), signerProvider: myKeysManager.signerProvider, feeEstimator: feeEstimator, chainMonitor: chainMonitor, txBroadcaster: broadcaster, logger: logger, enableP2PGossip: true, scorer: scorer)
+        let channelManagerConstructionParameters = ChannelManagerConstructionParameters(config: userConfig, entropySource: myKeysManager.inner.asEntropySource(), nodeSigner: myKeysManager.inner.asNodeSigner(), signerProvider: myKeysManager.signerProvider, feeEstimator: feeEstimator, chainMonitor: chainMonitor, txBroadcaster: broadcaster, logger: logger, enableP2PGossip: true, scorer: scorer)
         
         var latestBlockHash: [UInt8]? = nil
         var latestBlockHeight: UInt32? = nil
@@ -439,7 +439,7 @@ public class LDKManager: ObservableObject {
     }
     
     func generateInvoice(amount: UInt64, expiry: UInt32) -> String? {
-        let invoice = Bindings.createInvoiceFromChannelmanager(channelmanager: self.channelManager!, nodeSigner: myKeysManager.keysManager.asNodeSigner(), logger: self.logger, network: currency, amtMsat: amount, description: "Test Invoice", invoiceExpiryDeltaSecs: expiry, minFinalCltvExpiryDelta: nil)
+        let invoice = Bindings.createInvoiceFromChannelmanager(channelmanager: self.channelManager!, nodeSigner: myKeysManager.inner.asNodeSigner(), logger: self.logger, network: currency, amtMsat: amount, description: "Test Invoice", invoiceExpiryDeltaSecs: expiry, minFinalCltvExpiryDelta: nil)
         if invoice.isOk() {
             return invoice.getValue()!.toStr()
         }
