@@ -11,12 +11,15 @@ struct OpenChannelView: View {
     @EnvironmentObject var ldkManager: LDKManager
     @State private var peerPubkeyIp: String = ""
     @State private var channelOpened: Bool = false
+    @State private var amount: String = ""
     var body: some View {
         VStack {
+            CustomTextField(track: $amount, name: "Amount")
             CustomTextField(track: $peerPubkeyIp, name: "PeerId@Address:Port")
             Button {
-                let amount: UInt64 = 100000
-                channelOpened = ldkManager.openChannel(peerPubkeyIp: peerPubkeyIp, amount: amount, pushMsat: 0)
+                if let amount = UInt64(amount) {
+                    channelOpened = ldkManager.openChannel(peerPubkeyIp: peerPubkeyIp, amount: amount, pushMsat: 0)
+                }
             } label: {
                 Text("Open Channel")
                     .frame(width: 150, height: 50, alignment: .center)

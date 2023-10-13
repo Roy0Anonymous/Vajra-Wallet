@@ -389,8 +389,8 @@ public class LDKManager: ObservableObject {
         var res = [String]()
         for it in peerNodeIds {
             let nodeId = Utils.bytesToHex(bytes: it.0)
-            let address = Utils.bytesToIpAddress(bytes: it.1!.getValueAsIPv4()!.getAddr())
-            let port = it.1!.getValueAsIPv4()!.getPort()
+            let address = Utils.bytesToIpAddress(bytes: it.1!.getValueAsTcpIpV4()!.getAddr())
+            let port = it.1!.getValueAsTcpIpV4()!.getPort()
             res.append("\(nodeId)@\(address):\(port)")
         }
         return res

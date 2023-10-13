@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		C606D2322A7319680069457B /* MyKeysManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C606D2312A7319680069457B /* MyKeysManager.swift */; };
 		C613529C2A41A33000B7AE39 /* NodeErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C613529B2A41A33000B7AE39 /* NodeErrorView.swift */; };
-		C6268A382A915C6A00C1A7B5 /* BitcoinDevKit in Frameworks */ = {isa = PBXBuildFile; productRef = C6268A372A915C6A00C1A7B5 /* BitcoinDevKit */; };
-		C629A0252A7B0B2300C5EE07 /* LightningDevKit in Frameworks */ = {isa = PBXBuildFile; productRef = C629A0242A7B0B2300C5EE07 /* LightningDevKit */; };
 		C65690BA2A27FB5D002B013B /* SendPaymentOnChainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65690B92A27FB5D002B013B /* SendPaymentOnChainView.swift */; };
 		C6972C492A26B3CF00BBA785 /* CloseChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6972C482A26B3CF00BBA785 /* CloseChannelView.swift */; };
+		C69FF8332AD814F9009B2A05 /* BitcoinDevKit in Frameworks */ = {isa = PBXBuildFile; productRef = C69FF8322AD814F9009B2A05 /* BitcoinDevKit */; };
+		C69FF8542AD9E55B009B2A05 /* LightningDevKit-no-symlinks.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C69FF8532AD9E55B009B2A05 /* LightningDevKit-no-symlinks.xcframework */; };
 		C6D8C5802A215B290057D42E /* Vajra_WalletApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C57F2A215B290057D42E /* Vajra_WalletApp.swift */; };
 		C6D8C5822A215B290057D42E /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D8C5812A215B290057D42E /* WalletView.swift */; };
 		C6D8C5842A215B2A0057D42E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D8C5832A215B2A0057D42E /* Assets.xcassets */; };
@@ -50,6 +50,7 @@
 		C613529B2A41A33000B7AE39 /* NodeErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeErrorView.swift; sourceTree = "<group>"; };
 		C65690B92A27FB5D002B013B /* SendPaymentOnChainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPaymentOnChainView.swift; sourceTree = "<group>"; };
 		C6972C482A26B3CF00BBA785 /* CloseChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseChannelView.swift; sourceTree = "<group>"; };
+		C69FF8532AD9E55B009B2A05 /* LightningDevKit-no-symlinks.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = "LightningDevKit-no-symlinks.xcframework"; path = "../../../../../Downloads/LightningDevKit-no-symlinks.xcframework"; sourceTree = "<group>"; };
 		C6D8C57C2A215B290057D42E /* Vajra Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Vajra Wallet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6D8C57F2A215B290057D42E /* Vajra_WalletApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vajra_WalletApp.swift; sourceTree = "<group>"; };
 		C6D8C5812A215B290057D42E /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
@@ -88,8 +89,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6268A382A915C6A00C1A7B5 /* BitcoinDevKit in Frameworks */,
-				C629A0252A7B0B2300C5EE07 /* LightningDevKit in Frameworks */,
+				C69FF8542AD9E55B009B2A05 /* LightningDevKit-no-symlinks.xcframework in Frameworks */,
+				C69FF8332AD814F9009B2A05 /* BitcoinDevKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +100,7 @@
 		C6D8C5732A215B290057D42E = {
 			isa = PBXGroup;
 			children = (
+				C69FF8532AD9E55B009B2A05 /* LightningDevKit-no-symlinks.xcframework */,
 				C6D8C57E2A215B290057D42E /* Vajra Wallet */,
 				C6D8C57D2A215B290057D42E /* Products */,
 			);
@@ -226,8 +228,7 @@
 			);
 			name = "Vajra Wallet";
 			packageProductDependencies = (
-				C629A0242A7B0B2300C5EE07 /* LightningDevKit */,
-				C6268A372A915C6A00C1A7B5 /* BitcoinDevKit */,
+				C69FF8322AD814F9009B2A05 /* BitcoinDevKit */,
 			);
 			productName = "Vajra Wallet";
 			productReference = C6D8C57C2A215B290057D42E /* Vajra Wallet.app */;
@@ -258,8 +259,7 @@
 			);
 			mainGroup = C6D8C5732A215B290057D42E;
 			packageReferences = (
-				C629A0232A7B0B2300C5EE07 /* XCRemoteSwiftPackageReference "ldk-swift" */,
-				C6268A362A915C6A00C1A7B5 /* XCRemoteSwiftPackageReference "bdk-swift" */,
+				C69FF8312AD814F9009B2A05 /* XCRemoteSwiftPackageReference "bdk-swift" */,
 			);
 			productRefGroup = C6D8C57D2A215B290057D42E /* Products */;
 			projectDirPath = "";
@@ -521,34 +521,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C6268A362A915C6A00C1A7B5 /* XCRemoteSwiftPackageReference "bdk-swift" */ = {
+		C69FF8312AD814F9009B2A05 /* XCRemoteSwiftPackageReference "bdk-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/bitcoindevkit/bdk-swift";
 			requirement = {
 				kind = exactVersion;
-				version = 0.29.0;
-			};
-		};
-		C629A0232A7B0B2300C5EE07 /* XCRemoteSwiftPackageReference "ldk-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lightningdevkit/ldk-swift/";
-			requirement = {
-				kind = exactVersion;
-				version = 0.0.116;
+				version = 0.30.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C6268A372A915C6A00C1A7B5 /* BitcoinDevKit */ = {
+		C69FF8322AD814F9009B2A05 /* BitcoinDevKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C6268A362A915C6A00C1A7B5 /* XCRemoteSwiftPackageReference "bdk-swift" */;
+			package = C69FF8312AD814F9009B2A05 /* XCRemoteSwiftPackageReference "bdk-swift" */;
 			productName = BitcoinDevKit;
-		};
-		C629A0242A7B0B2300C5EE07 /* LightningDevKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C629A0232A7B0B2300C5EE07 /* XCRemoteSwiftPackageReference "ldk-swift" */;
-			productName = LightningDevKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

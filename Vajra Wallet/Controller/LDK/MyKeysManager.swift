@@ -51,10 +51,10 @@ class MySignerProvider: SignerProvider {
     weak var myKeysManager: MyKeysManager?
     
     // We return the destination and shutdown scripts derived by the BDK wallet.
-    override func getDestinationScript() -> Bindings.Result_ScriptNoneZ {
+    override func getDestinationScript() -> Bindings.Result_CVec_u8ZNoneZ {
         do {
             let address = try myKeysManager!.wallet.getAddress(addressIndex: .new)
-            return Bindings.Result_ScriptNoneZ.initWithOk(o: address.address.scriptPubkey().toBytes())
+            return Bindings.Result_CVec_u8ZNoneZ.initWithOk(o: address.address.scriptPubkey().toBytes())
         } catch {
             return .initWithErr()
         }

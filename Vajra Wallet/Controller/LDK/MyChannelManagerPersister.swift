@@ -32,7 +32,6 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
             } catch {
                 print(error.localizedDescription)
             }
-            
         }
         else if let paymentSentEvent = event.getValueAsPaymentSent() {
             print("handleEvent: Payment Sent \(paymentSentEvent)")
@@ -94,29 +93,29 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
         }
     }
 
-    override func persistManager(channelManager: Bindings.ChannelManager) -> Bindings.Result_NoneErrorZ {
+    override func persistManager(channelManager: Bindings.ChannelManager) -> Bindings.Result_NoneIOErrorZ {
         print("Persisting Channel Manager")
         let channelManagerBytes = channelManager.write()
         let data = Data(channelManagerBytes)
         FileHandler.writeData(data: data, path: "ChannelManager")
         print("persist_manager: saved")
-        return Result_NoneErrorZ.initWithOk()
+        return Bindings.Result_NoneIOErrorZ.initWithOk()
     }
     
-    override func persistGraph(networkGraph: NetworkGraph) -> Result_NoneErrorZ {
+    override func persistGraph(networkGraph: NetworkGraph) -> Bindings.Result_NoneIOErrorZ {
         print("Persisting Network Graph")
         let networkGraphBytes = networkGraph.write()
         FileHandler.writeData(data: Data(networkGraphBytes), path: "NetworkGraph")
         print("persist_network_graph: saved\n");
-        return Result_NoneErrorZ.initWithOk()
+        return Bindings.Result_NoneIOErrorZ.initWithOk()
     }
     
-    override func persistScorer(scorer: WriteableScore) -> Result_NoneErrorZ {
+    override func persistScorer(scorer: WriteableScore) -> Bindings.Result_NoneIOErrorZ {
         print("Persisting Scorer")
         let scorerBytes = scorer.write()
         FileHandler.writeData(data: Data(scorerBytes), path: "ProbabilisticScorer")
         print("probabilistic_scorer: save success")
-        return Result_NoneErrorZ.initWithOk()
+        return Bindings.Result_NoneIOErrorZ.initWithOk()
     }
 }
 
