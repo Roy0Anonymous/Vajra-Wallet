@@ -9,11 +9,13 @@ import LightningDevKit
 
 class MyFeeEstimator: FeeEstimator {
     override func getEstSatPer1000Weight(confirmationTarget: Bindings.ConfirmationTarget) -> UInt32 {
-        if confirmationTarget == .Background {
+        if confirmationTarget == .MinAllowedNonAnchorChannelRemoteFee {
             return 253
-        } else if confirmationTarget == .Normal {
+        } else if confirmationTarget == .ChannelCloseMinimum {
             return 1000
-        } else if confirmationTarget == .HighPriority {
+        } else if confirmationTarget == .MaxAllowedNonAnchorChannelRemoteFee {
+            return 7500
+        } else if confirmationTarget == .OnChainSweep {
             return 7500
         }
         return 7500
