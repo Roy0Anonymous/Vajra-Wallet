@@ -51,13 +51,17 @@ class MySignerProvider: SignerProvider {
     weak var myKeysManager: MyKeysManager?
     
     // We return the destination and shutdown scripts derived by the BDK wallet.
-    override func getDestinationScript() -> Bindings.Result_CVec_u8ZNoneZ {
-        do {
-            let address = try myKeysManager!.wallet.getAddress(addressIndex: .new)
-            return Bindings.Result_CVec_u8ZNoneZ.initWithOk(o: address.address.scriptPubkey().toBytes())
-        } catch {
-            return .initWithErr()
-        }
+//    override func getDestinationScript() -> Bindings.Result_CVec_u8ZNoneZ {
+//        do {
+//            let address = try myKeysManager!.wallet.getAddress(addressIndex: .new)
+//            return Bindings.Result_CVec_u8ZNoneZ.initWithOk(o: address.address.scriptPubkey().toBytes())
+//        } catch {
+//            return .initWithErr()
+//        }
+//    }
+    
+    override func getDestinationScript(channelKeysId: [UInt8]) -> Bindings.Result_CVec_u8ZNoneZ {
+        return Bindings.Result_CVec_u8ZNoneZ.initWithOk(o: channelKeysId)
     }
     
     override func getShutdownScriptpubkey() -> Bindings.Result_ShutdownScriptNoneZ {
@@ -102,7 +106,7 @@ class MySignerProvider: SignerProvider {
                 case .v16:
                     ver = 16
                 }
-                let res = ShutdownScript.newWitnessProgram(version: ver, program: program)
+                let res = ShutdownScript.newWitnessProgram(witnessProgram: .init(version: ver, program: program))
                 if res.isOk() {
                     return Bindings.Result_ShutdownScriptNoneZ.initWithOk(o: res.getValue()!)
                 }

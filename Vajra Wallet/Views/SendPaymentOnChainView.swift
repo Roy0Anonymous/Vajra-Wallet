@@ -18,7 +18,8 @@ struct SendPaymentOnChainView: View {
         CustomTextField(track: $amount, name: "Amount")
         Button {
             do {
-                let script = try Address(address: address).scriptPubkey()
+                let network = ldkManager.network == .Testnet ? BitcoinDevKit.Network.testnet : BitcoinDevKit.Network.regtest
+                let script = try Address(address: address, network: network).scriptPubkey()
                 guard let amount = UInt64(amount) else {
                     print("Could not convert amount to UInt64")
                     return

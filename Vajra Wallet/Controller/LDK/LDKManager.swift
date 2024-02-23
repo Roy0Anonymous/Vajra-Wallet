@@ -180,7 +180,7 @@ public class LDKManager: ObservableObject {
         
         if serializedChannelManager != nil && !serializedChannelManager!.isEmpty {
             do {
-                self.channelManagerConstructor = try ChannelManagerConstructor(channelManagerSerialized: serializedChannelManager!, channelMonitorsSerialized: serializedChannelMonitors, networkGraph: NetworkGraphArgument.instance(netGraph), filter: filter, params: channelManagerConstructionParameters)
+                self.channelManagerConstructor = try ChannelManagerConstructor(channelManagerSerialized: serializedChannelManager!, channelMonitorsSerialized: serializedChannelMonitors, networkGraph: NetworkGraphArgument.instance(netGraph), filter: filter, params: channelManagerConstructionParameters, logger: logger)
                 print("Channel Manager Constructor Loaded")
             } catch {
                 print("Failed to load Channel Manager Constructor, creating new one")
@@ -406,7 +406,7 @@ public class LDKManager: ObservableObject {
         let channelConfig = ChannelHandshakeConfig.initWithDefault()
         channelConfig.setAnnouncedChannel(val: false)
         userConfig.setChannelHandshakeConfig(val: channelConfig)
-        let createChannelResults = self.channelManager?.createChannel(theirNetworkKey: Utils.hexStringToByteArray(pubkeyIp[0]), channelValueSatoshis: amount, pushMsat: pushMsat, userChannelId: channelId, overrideConfig: userConfig)
+        let createChannelResults = self.channelManager?.createChannel(theirNetworkKey: Utils.hexStringToByteArray(pubkeyIp[0]), channelValueSatoshis: amount, pushMsat: pushMsat, userChannelId: channelId, temporaryChannelId: nil, overrideConfig: userConfig)
         if createChannelResults == nil {
             return false
         }
@@ -425,14 +425,19 @@ public class LDKManager: ObservableObject {
     
     func sendPayment(invoice: String) -> Bool {
         let invoiceResult = Bolt11Invoice.fromStr(s: invoice)
-        guard let invoice = invoiceResult.getValue(), let channelManager = self.channelManager else {
+        guard let invoice = invoiceResult.getValue() else {
             print("Could not parse invoice")
             return false
         }
 
-        let invoicePaymentResult = Bindings.payInvoice(invoice: invoice, retryStrategy: Bindings.Retry.initWithTimeout(a: 15), channelmanager: channelManager)
-
-        if invoicePaymentResult.isOk() {
+        let invoicePaymentResult = Bindings.paymentParametersFromInvoice(invoice: invoice)
+        guard invoicePaymentResult.isOk() else {
+            return false
+        }
+        let (paymentHash, recipientOnion, routeParams) = Bindings.paymentParametersFromInvoice(invoice: invoice).getValue()!
+        let paymentId = invoice.paymentHash()!
+        let res = channelManager.sendPayment(paymentHash: paymentHash, recipientOnion: recipientOnion, paymentId: paymentId, routeParams: routeParams, retryStrategy: .initWithTimeout(a: 15))
+        if res.isOk() {
             return true
         }
         return false

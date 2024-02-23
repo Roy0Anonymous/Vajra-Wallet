@@ -17,7 +17,8 @@ class MyChannelManagerPersister: Persister, ExtendedChannelManagerPersister {
             let outputs = event.getOutputs()
             do {
                 let address = ldkManager!.bdkManager.getAddress(addressIndex: .new)!
-                let script = try Address(address: address).scriptPubkey().toBytes()
+                let network = ldkManager!.network == .Testnet ? BitcoinDevKit.Network.testnet : BitcoinDevKit.Network.regtest
+                let script = try Address(address: address, network: network).scriptPubkey().toBytes()
                 let res = ldkManager!.myKeysManager.spendSpendableOutputs(
                     descriptors: outputs,
                     outputs: [],

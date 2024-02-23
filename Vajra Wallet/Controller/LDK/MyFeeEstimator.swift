@@ -13,7 +13,7 @@ class MyFeeEstimator: FeeEstimator {
             return 253
         } else if confirmationTarget == .ChannelCloseMinimum {
             return 1000
-        } else if confirmationTarget == .MaxAllowedNonAnchorChannelRemoteFee {
+        } else if confirmationTarget == .NonAnchorChannelFee {
             return 7500
         } else if confirmationTarget == .OnChainSweep {
             return 7500
