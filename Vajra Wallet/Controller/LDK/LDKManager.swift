@@ -425,7 +425,7 @@ public class LDKManager: ObservableObject {
     
     func sendPayment(invoice: String) -> Bool {
         let invoiceResult = Bolt11Invoice.fromStr(s: invoice)
-        guard let invoice = invoiceResult.getValue() else {
+        guard let invoice = invoiceResult.getValue(), let channelManager = self.channelManager else {
             print("Could not parse invoice")
             return false
         }
